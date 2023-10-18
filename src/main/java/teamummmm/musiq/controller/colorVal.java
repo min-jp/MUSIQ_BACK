@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 // TODO
 //  enum값 수정
+
 @NoArgsConstructor  // 매개변수 없는 생성자
 @Getter
 public enum colorVal {
