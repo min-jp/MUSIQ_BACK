@@ -20,6 +20,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;  // 오브젝트 아이디
 
+    private String loginId;  // 로그인 유저 아이디
+
     private String userName; // 사용자 이름
 
     @OneToMany(mappedBy = "user")
