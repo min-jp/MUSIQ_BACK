@@ -1,4 +1,4 @@
-package teamummmm.musiq.controller;
+package teamummmm.musiq.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +15,20 @@ import java.util.List;
 @AllArgsConstructor  // 모든 매개변수 생성자
 @Data // getter, setter
 @Entity
-@Table(name = "OtherUser")
-public class OtherUserEntity {
+@Table(name = "SharePageAns")
+public class SharePageAnsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;  // 오브젝트 아이디
+    private Long answerId;  // 오브젝트 아이디
 
-    private String nickname;  // 타 사용자 별명
+    @ManyToOne
+    private MusicInfoEntity musicInfo;  // 음악 아이디 - fk (MusicInfo)
 
-    @OneToMany(mappedBy = "otherUser")
+    private LocalDate answerDate;  // 대답 날짜
+
+    @ManyToOne
+    private SharePageQsEntity sharePageQs;  // 질문 아이디 - fk (SharePageQs)
+
+    @OneToMany(mappedBy = "sharePageAns")
     private List<OtherUserRecordEntity> otherUserRecordList = new ArrayList<>();  // OtherUserRecord 양방향
 }

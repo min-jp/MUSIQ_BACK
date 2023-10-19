@@ -1,4 +1,4 @@
-package teamummmm.musiq.controller;
+package teamummmm.musiq.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

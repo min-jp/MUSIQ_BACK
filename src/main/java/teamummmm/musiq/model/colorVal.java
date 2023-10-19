@@ -1,4 +1,4 @@
-package teamummmm.musiq.controller;
+package teamummmm.musiq.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
