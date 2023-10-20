@@ -22,6 +22,6 @@ public class OtherUserEntity {
 
     private String nickname;  // 타 사용자 별명
 
-    @OneToMany(mappedBy = "otherUser")
-    private List<OtherUserRecordEntity> otherUserRecordList = new ArrayList<>();  // OtherUserRecord 양방향
+    /*@OneToMany(mappedBy = "otherUser")
+    private List<OtherUserRecordEntity> otherUserRecordList = new ArrayList<>();  // OtherUserRecord 양방향*/
 }

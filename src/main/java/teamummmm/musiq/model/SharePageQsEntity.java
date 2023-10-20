@@ -31,6 +31,6 @@ public class SharePageQsEntity {
     @ColumnDefault("0")
     private int todayViews;  // 오늘 조회수
 
-    @OneToMany(mappedBy = "sharePageQs")
-    private List<SharePageAnsEntity> sharePageAnsList = new ArrayList<>();  // SharePageAns 양방향
+    /*@OneToMany(mappedBy = "sharePageQs")
+    private List<SharePageAnsEntity> sharePageAnsList = new ArrayList<>();  // SharePageAns 양방향*/
 }

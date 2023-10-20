@@ -24,9 +24,9 @@ public class UserEntity {
 
     private String userName; // 사용자 이름
 
-    @OneToMany(mappedBy = "user")
+    /*@OneToMany(mappedBy = "user")
     private List<SharePageQsEntity> sharePageQsList = new ArrayList<>();  // SharePageQs 양방향
 
     @OneToMany(mappedBy = "user")
-    private List<AnswerPageQsEntity> answerPageQsList = new ArrayList<>();  // nswerPageQs 양방향
+    private List<AnswerPageQsEntity> answerPageQsList = new ArrayList<>();  // nswerPageQs 양방향*/
 }

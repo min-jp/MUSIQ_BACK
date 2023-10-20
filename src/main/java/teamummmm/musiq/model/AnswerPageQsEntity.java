@@ -27,6 +27,6 @@ public class AnswerPageQsEntity {
     @ManyToOne
     private UserEntity user;  // 유저 아이디 - fk (User)
 
-    @OneToMany(mappedBy = "answerPageQs")
-    private List<AnswerPageAnsEntity> answerPageAnsList = new ArrayList<>();  // SharePageAns 양방향
+    /*@OneToMany(mappedBy = "answerPageQs")
+    private List<AnswerPageAnsEntity> answerPageAnsList = new ArrayList<>();  // SharePageAns 양방향*/
 }
