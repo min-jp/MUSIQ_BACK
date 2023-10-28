@@ -6,22 +6,26 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
 @AllArgsConstructor  // 모든 매개변수 생성자
 @Data // getter, setter
 @Entity
-@Table(name = "OtherUser")
-public class OtherUserEntity {
+@Table(name = "Answer")
+public class AnswerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;  // 오브젝트 아이디
+    private Long answerId;  // 오브젝트 아이디
 
-    private String nickname;  // 타 사용자 별명
+    @ManyToOne
+    private MusicInfoEntity musicInfo;  // 음악 아이디 - fk (MusicInfo)
 
-    /*@OneToMany(mappedBy = "otherUser")
-    private List<OtherUserRecordEntity> otherUserRecordList = new ArrayList<>();  // OtherUserRecord 양방향*/
+    private LocalDate answerDate;  // 대답 날짜
+
+    private String caption;  // 캡션
+
+    @ManyToOne
+    private UserQuestionEntity userQuestion;  // 질문 아이디 - fk (UserQuestion)
 }

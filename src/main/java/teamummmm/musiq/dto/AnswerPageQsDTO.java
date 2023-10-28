@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamummmm.musiq.model.AnswerPageQsEntity;
+import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.model.UserEntity;
 
 @Builder
@@ -20,15 +20,15 @@ public class AnswerPageQsDTO {
 
     private UserEntity user;  // 유저 아이디 - fk (User)
 
-    public AnswerPageQsDTO(final AnswerPageQsEntity entity) {
+    public AnswerPageQsDTO(final UserQuestionEntity entity) {
         this.questionId = entity.getQuestionId();
         this.questionMsg = entity.getQuestionMsg();
         this.emoji = entity.getEmoji();
         this.user = entity.getUser();
     }
 
-    public static AnswerPageQsEntity toEntity(final AnswerPageQsDTO dto) {
-        return AnswerPageQsEntity.builder()
+    public static UserQuestionEntity toEntity(final AnswerPageQsDTO dto) {
+        return UserQuestionEntity.builder()
                 .questionId(dto.getQuestionId())
                 .questionMsg(dto.getQuestionMsg())
                 .emoji(dto.getEmoji())

@@ -24,9 +24,5 @@ public class UserEntity {
 
     private String userName; // 사용자 이름
 
-    /*@OneToMany(mappedBy = "user")
-    private List<SharePageQsEntity> sharePageQsList = new ArrayList<>();  // SharePageQs 양방향
-
-    @OneToMany(mappedBy = "user")
-    private List<AnswerPageQsEntity> answerPageQsList = new ArrayList<>();  // nswerPageQs 양방향*/
+    private int consecutiveDates;  // 연속으로 대답한 날
 }

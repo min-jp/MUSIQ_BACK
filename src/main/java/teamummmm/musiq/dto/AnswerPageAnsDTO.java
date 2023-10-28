@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamummmm.musiq.model.AnswerPageAnsEntity;
-import teamummmm.musiq.model.AnswerPageQsEntity;
+import teamummmm.musiq.model.AnswerEntity;
+import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.model.MusicInfoEntity;
 
 import java.time.LocalDate;
@@ -23,9 +23,9 @@ public class AnswerPageAnsDTO {
 
     private String caption;  // 캡션
 
-    private AnswerPageQsEntity answerPageQs;  // 질문 아이디 - fk (AnswerPageQs)
+    private UserQuestionEntity answerPageQs;  // 질문 아이디 - fk (AnswerPageQs)
 
-    public AnswerPageAnsDTO(final AnswerPageAnsEntity entity) {
+    public AnswerPageAnsDTO(final AnswerEntity entity) {
         this.answerId = entity.getAnswerId();
         this.musicInfo = entity.getMusicInfo();
         this.answerDate = entity.getAnswerDate();
@@ -33,8 +33,8 @@ public class AnswerPageAnsDTO {
         this.answerPageQs = entity.getAnswerPageQs();
     }
 
-    public static AnswerPageAnsEntity toEntity(final AnswerPageAnsDTO dto) {
-        return AnswerPageAnsEntity.builder()
+    public static AnswerEntity toEntity(final AnswerPageAnsDTO dto) {
+        return AnswerEntity.builder()
                 .answerId(dto.getAnswerId())
                 .musicInfo(dto.getMusicInfo())
                 .answerDate(dto.getAnswerDate())
