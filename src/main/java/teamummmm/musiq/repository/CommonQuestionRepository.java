@@ -2,8 +2,8 @@ package teamummmm.musiq.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import teamummmm.musiq.model.UserQuestionEntity;
+import teamummmm.musiq.model.CommonQuestionEntity;
 
 @Repository
-public interface AnswerPageQsRepository extends JpaRepository<UserQuestionEntity, Long> {
+public interface CommonQuestionRepository extends JpaRepository<CommonQuestionEntity, Long> {
 }
