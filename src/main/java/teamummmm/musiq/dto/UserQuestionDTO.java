@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamummmm.musiq.model.CommonQuestionEntity;
 import teamummmm.musiq.model.UserQuestionEntity;
-import teamummmm.musiq.model.UserEntity;
+import teamummmm.musiq.model.UserProfileEntity;
 
 @Builder
 @NoArgsConstructor
@@ -19,7 +19,7 @@ public class UserQuestionDTO {
 
     private int answerCount;  // 답변 횟수 (답변 개수가 아니라 특정 질문에 대해서 몇번 답변했는지)
 
-    private UserEntity user;  // 유저 아이디 - fk (User)
+    private UserProfileEntity user;  // 유저 아이디 - fk (User)
 
     private CommonQuestionEntity commonQuestion;  // 공통 질문 아이디 - fk (CommonQuestion)
 
