@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class AnswerPageAnsDTO {
+public class AnswerDTO {
     private Long answerId;  // 오브젝트 아이디
 
     private MusicInfoEntity musicInfo;  // 음악 아이디 - fk (MusicInfo)
@@ -23,23 +23,23 @@ public class AnswerPageAnsDTO {
 
     private String caption;  // 캡션
 
-    private UserQuestionEntity answerPageQs;  // 질문 아이디 - fk (AnswerPageQs)
+    private UserQuestionEntity userQuestion;  // 질문 아이디 - fk (UserQuestion)
 
-    public AnswerPageAnsDTO(final AnswerEntity entity) {
+    public AnswerDTO(final AnswerEntity entity) {
         this.answerId = entity.getAnswerId();
         this.musicInfo = entity.getMusicInfo();
         this.answerDate = entity.getAnswerDate();
         this.caption = entity.getCaption();
-        this.answerPageQs = entity.getAnswerPageQs();
+        this.userQuestion = entity.getUserQuestion();
     }
 
-    public static AnswerEntity toEntity(final AnswerPageAnsDTO dto) {
+    public static AnswerEntity toEntity(final AnswerDTO dto) {
         return AnswerEntity.builder()
                 .answerId(dto.getAnswerId())
                 .musicInfo(dto.getMusicInfo())
                 .answerDate(dto.getAnswerDate())
                 .caption(dto.getCaption())
-                .answerPageQs(dto.getAnswerPageQs())
+                .userQuestion(dto.getUserQuestion())
                 .build();
     }
 }
