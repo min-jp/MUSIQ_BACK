@@ -15,9 +15,9 @@ import teamummmm.musiq.model.UserProfileEntity;
 public class UserQuestionDTO {
     private Long userQuestionId;  // 오브젝트 아이디
 
-    private int callCount;  // 질문 노출 횟수
+    //private int callCount;  // 질문 노출 횟수
 
-    private int answerCount;  // 답변 횟수 (답변 개수가 아니라 특정 질문에 대해서 몇번 답변했는지)
+    //private int answerCount;  // 답변 횟수 (답변 개수가 아니라 특정 질문에 대해서 몇번 답변했는지)
 
     private UserProfileEntity user;  // 유저 아이디 - fk (User)
 
@@ -25,8 +25,8 @@ public class UserQuestionDTO {
 
     public UserQuestionDTO(final UserQuestionEntity entity) {
         this.userQuestionId = entity.getUserQuestionId();
-        this.callCount = entity.getCallCount();
-        this.answerCount = entity.getAnswerCount();
+        //this.callCount = entity.getCallCount();
+        //this.answerCount = entity.getAnswerCount();
         this.user = entity.getUser();
         this.commonQuestion = entity.getCommonQuestion();
     }
@@ -34,8 +34,8 @@ public class UserQuestionDTO {
     public static UserQuestionEntity toEntity(final UserQuestionDTO dto) {
         return UserQuestionEntity.builder()
                 .userQuestionId(dto.getUserQuestionId())
-                .callCount(dto.getCallCount())
-                .answerCount(dto.getAnswerCount())
+                //.callCount(dto.getCallCount())
+                //.answerCount(dto.getAnswerCount())
                 .user(dto.getUser())
                 .commonQuestion(dto.getCommonQuestion())
                 .build();
