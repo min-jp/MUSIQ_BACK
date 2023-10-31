@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SearchResultDTO {
-    private String musicId;
+    private String music_id;  // 음악 아이디 (musicId)
 }

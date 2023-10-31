@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class SearchAddSongDTO {
-    private String mainColor;
+    private String main_color;  // 그 질문의 바뀐 메인 컬러
 }

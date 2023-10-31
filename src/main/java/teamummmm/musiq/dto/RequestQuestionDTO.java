@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class RequestQuestionDTO {
-    private Long userQuestionId;  // 오브젝트 아이디
+    private Long question_id;  // 오브젝트 아이디 (userQuestionId)
 
-    private String questionMsg;  // 질문 내용
+    private String question_message;  // 질문 내용 (questionMsg)
 
-    private String emoji;  // 질문 이모지
+    private String emoji;  // 질문 이모지 (emoji)
 
-    private String mainColor;  // 질문의 메인 컬러
+    private String main_color;  // 질문의 메인 컬러
 }
