@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import teamummmm.musiq.model.MusicInfoEntity;
 import teamummmm.musiq.model.colorVal;
 
+/*
+ * 사용 안함
+ * */
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

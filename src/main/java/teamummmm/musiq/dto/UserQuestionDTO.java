@@ -8,6 +8,10 @@ import teamummmm.musiq.model.CommonQuestionEntity;
 import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.model.UserProfileEntity;
 
+/*
+ * 사용 안함
+ * */
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamummmm.musiq.model.UserProfileEntity;
 
+/*
+ * 사용 안함
+ * */
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

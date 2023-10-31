@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import teamummmm.musiq.model.CommonQuestionEntity;
 //import teamummmm.musiq.model.categoryVal;
 
+/*
+ * 사용 안함
+ * */
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
