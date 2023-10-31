@@ -20,13 +20,14 @@ public class QuestionController {
 
     @GetMapping("/main")
     public ResponseEntity<?> mainQuestionRequest(
-            @RequestParam("user_id") Long id,
-            @RequestParam("refresh") boolean refresh
+            @RequestParam(value = "user_id", required = true) Long userId,
+            @RequestParam(value = "refresh", required = true) boolean refresh
     ) {
         try {
             // TODO
-            //  dtos에 서비스 넣음
-            List<RequestQuestionDTO> dtos = null;  // UserQuestionDTO 생성
+            //  유저 아이디
+            Long temporaryUserId = 12345L;  // 임시 유저 아이디
+            List<RequestQuestionDTO> dtos = service.mainQuestionService(temporaryUserId, refresh);  // UserQuestionDTO 생성
             ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
                     .data(dtos)
                     .build();  // UserQuestionDTO 이용하여 ResponseDTO 초기화
