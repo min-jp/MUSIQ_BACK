@@ -20,8 +20,8 @@ public class QuestionController {
 
     @GetMapping("/main")
     public ResponseEntity<?> mainQuestionRequest(
-            @RequestParam(value = "user_id", required = true) Long userId,
-            @RequestParam(value = "refresh", required = true) boolean refresh
+            @RequestParam(value = "user_id") Long userId,
+            @RequestParam(value = "refresh") boolean refresh
     ) {
         try {
             // TODO
