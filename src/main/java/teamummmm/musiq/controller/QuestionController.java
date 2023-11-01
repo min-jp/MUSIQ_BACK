@@ -27,9 +27,9 @@ public class QuestionController {
             // TODO
             //  유저 아이디
             Long temporaryUserId = 1L;  // 임시 유저 아이디
-            List<RequestQuestionDTO> dtos = service.mainQuestionService(temporaryUserId, refresh);  // UserQuestionDTO 생성
+            RequestQuestionDTO dto = service.mainQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
             ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
-                    .data(dtos)
+                    .data(List.of(dto))
                     .build();  // UserQuestionDTO 이용하여 ResponseDTO 초기화
             return ResponseEntity.ok().body(response);  // ResponseDTO 리턴
         } catch (Exception e) {
