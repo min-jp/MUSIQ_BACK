@@ -1,6 +1,6 @@
 package teamummmm.musiq.service;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.repository.UserQuestionRepository;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class TestService {
-    UserQuestionRepository repository;
+    private UserQuestionRepository repository;
 
     public List<UserQuestionEntity> test() {
         Long a = 2L;
