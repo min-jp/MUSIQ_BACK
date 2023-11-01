@@ -26,7 +26,7 @@ public class QuestionController {
         try {
             // TODO
             //  유저 아이디
-            Long temporaryUserId = 12345L;  // 임시 유저 아이디
+            Long temporaryUserId = 1L;  // 임시 유저 아이디
             List<RequestQuestionDTO> dtos = service.mainQuestionService(temporaryUserId, refresh);  // UserQuestionDTO 생성
             ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
                     .data(dtos)
