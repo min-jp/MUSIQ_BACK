@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import teamummmm.musiq.dto.QuestionListDTO;
 import teamummmm.musiq.dto.ResponseDTO;
-import teamummmm.musiq.dto.UserQuestionDTO;
-import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.service.TestService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("test")
