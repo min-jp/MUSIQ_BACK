@@ -28,15 +28,19 @@ public class QuestionController {
             //  유저 아이디
             Long temporaryUserId = 1L;  // 임시 유저 아이디
             RequestQuestionDTO dto = service.mainQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
+
             ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
                     .data(List.of(dto))
                     .build();  // UserQuestionDTO 이용하여 ResponseDTO 초기화
+
             return ResponseEntity.ok().body(response);  // ResponseDTO 리턴
         } catch (Exception e) {
             String error = e.getMessage();
+
             ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
                     .error(error)
                     .build();
+
             return ResponseEntity.badRequest().body(response);
         }
     }
