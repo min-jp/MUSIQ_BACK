@@ -33,7 +33,6 @@ public class SearchController {
         }
         catch (Exception e) {
             String error = e.getMessage();
-
             ResponseDTO<SearchResultDTO> response = ResponseDTO.<SearchResultDTO>builder()
                     .error(error)
                     .build();
