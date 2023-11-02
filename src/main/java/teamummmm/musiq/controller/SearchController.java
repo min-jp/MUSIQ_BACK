@@ -1,12 +1,11 @@
 package teamummmm.musiq.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import teamummmm.musiq.dto.ResponseDTO;
+import teamummmm.musiq.dto.SearchAddSongDTO;
 import teamummmm.musiq.dto.SearchResultDTO;
 import teamummmm.musiq.service.SearchService;
 
@@ -34,6 +33,31 @@ public class SearchController {
         catch (Exception e) {
             String error = e.getMessage();
             ResponseDTO<SearchResultDTO> response = ResponseDTO.<SearchResultDTO>builder()
+                    .error(error)
+                    .build();
+
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addSong(
+            @RequestParam(value = "user_id") Long userId,
+            @RequestParam(value = "question_id") Long questionId,
+            @RequestParam(value = "music_id") String musicId
+    ) {
+        try {
+            SearchAddSongDTO dto = service.addSongService(userId, questionId, musicId);  // SearchAddSongDTO 생성
+
+            ResponseDTO<SearchAddSongDTO> response = ResponseDTO.<SearchAddSongDTO>builder()
+                    .data(List.of(dto))
+                    .build();  // SearchAddSongDTO 이용하여 ResponseDTO 초기화
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);  // ResponseDTO 리턴 (201 CREATED)
+        }
+        catch (Exception e) {
+            String error = e.getMessage();
+            ResponseDTO<SearchAddSongDTO> response = ResponseDTO.<SearchAddSongDTO>builder()
                     .error(error)
                     .build();
 
