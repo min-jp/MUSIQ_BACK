@@ -1,6 +1,6 @@
 package teamummmm.musiq.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamummmm.musiq.dto.RequestQuestionDTO;
 import teamummmm.musiq.model.UserQuestionEntity;
@@ -10,12 +10,12 @@ import teamummmm.musiq.repository.UserQuestionRepository;
 import java.util.List;
 
 @Service
-@AllArgsConstructor  // 생성자 주입
+@RequiredArgsConstructor  // 생성자 주입
 public class QuestionService {
-    private UserQuestionRepository userQuestionRepository;
-    private CommonQuestionRepository commonQuestionRepository;
+    private final UserQuestionRepository userQuestionRepository;
+    private final CommonQuestionRepository commonQuestionRepository;
 
-    public RequestQuestionDTO mainQuestionService(Long userId, boolean refresh) {
+    public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
         List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserId(userId);
 
@@ -69,7 +69,7 @@ public class QuestionService {
     //  메인 질문 일반 질문 구현
     // 메인 일반 질문
 
-    public RequestQuestionDTO answeredQuestionService(Long userId, boolean refresh) {
+    public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
         List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserId(userId);
 

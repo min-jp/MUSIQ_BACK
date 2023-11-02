@@ -1,6 +1,6 @@
 package teamummmm.musiq.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +13,10 @@ import teamummmm.musiq.service.QuestionService;
 import java.util.List;
 
 @RestController
-@AllArgsConstructor  // 생성자 주입
+@RequiredArgsConstructor  // 생성자 주입
 @RequestMapping("question")
 public class QuestionController {
-    private QuestionService service;  // service
+    private final QuestionService service;  // service
 
     @GetMapping("/main")
     public ResponseEntity<?> mainQuestionRequest(
