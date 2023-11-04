@@ -40,3 +40,6 @@ out/
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+### spotify API secret key
+spotify-api-key.json
