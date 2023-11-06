@@ -16,7 +16,7 @@ import java.io.IOException;
 public class SpotifySearch {
     private final SpotifyToken spotifyToken;
 
-    public String searchTracks(String q) {
+    public Paging<Track> searchTracks(String q) {
         final String accessToken = spotifyToken.getToken();
 
         final SpotifyApi spotifyApi = new SpotifyApi.Builder()
@@ -28,8 +28,7 @@ public class SpotifySearch {
                 .build();
 
         try {
-            final Paging<Track> trackPaging = searchTracksRequest.execute();
-            return trackPaging.toString();
+            return searchTracksRequest.execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             return null;
         }
