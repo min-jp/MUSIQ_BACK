@@ -21,7 +21,7 @@ public class CommonQuestionEntity {
 
     private String emoji;  // 질문 이모지
 
-    private categoryVal category;  // 질문 카테고리
+    private CategoryVal category;  // 질문 카테고리
 
     private float valence;  // 음악 valence
 

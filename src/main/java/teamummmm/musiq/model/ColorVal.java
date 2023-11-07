@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor  // 매개변수 없는 생성자
 @Getter
-public enum colorVal {
+public enum ColorVal {
     VALUE1,
     VALUE2,
     VALUE3,

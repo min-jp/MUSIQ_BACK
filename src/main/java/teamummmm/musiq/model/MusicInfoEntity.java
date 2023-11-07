@@ -18,5 +18,5 @@ public class MusicInfoEntity {
     @Id
     private String musicId;  // 음악 아이디
 
-    private colorVal musicColor;  // 음악별 색깔
+    private ColorVal musicColor;  // 음악별 색깔
 }
