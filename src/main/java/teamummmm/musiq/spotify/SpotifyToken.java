@@ -3,6 +3,7 @@ package teamummmm.musiq.spotify;
 import org.apache.hc.core5.http.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.exceptions.SpotifyWebApiException;
@@ -19,10 +20,10 @@ public class SpotifyToken {
     @Value("${spotify.client.secret}")
     private String clientSecret;
 
-    // TODO
-    //  토큰 저장, 스케줄링 추가
-    // 토큰 가져옴
-    public String getToken() {
+    private String accessToken;  // 엑세스 토큰
+
+    @Scheduled(fixedRate = 3540000)  // 59분마다 실행
+    private void generateToken() {  // 토큰 생성
         final SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
@@ -33,10 +34,13 @@ public class SpotifyToken {
 
         try {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();  // 실행
-            return clientCredentials.getAccessToken();  // 엑세스 토큰
+            accessToken = clientCredentials.getAccessToken();  // 엑세스 토큰
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             e.printStackTrace();
-            return null;
         }
+    }
+
+    public String getToken() {  // 토큰 가져오기
+        return accessToken;
     }
 }
