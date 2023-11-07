@@ -42,12 +42,11 @@ public class SearchController {
 
     @PostMapping
     public ResponseEntity<?> addSong(
-            @RequestParam(value = "user_id") Long userId,
             @RequestParam(value = "question_id") Long questionId,
             @RequestParam(value = "music_id") String musicId
     ) {
         try {
-            SearchAddSongDTO dto = service.addSongService(userId, questionId, musicId);  // SearchAddSongDTO 생성
+            SearchAddSongDTO dto = service.addSongService(questionId, musicId);  // SearchAddSongDTO 생성
 
             ResponseDTO<SearchAddSongDTO> response = ResponseDTO.<SearchAddSongDTO>builder()
                     .data(List.of(dto))
