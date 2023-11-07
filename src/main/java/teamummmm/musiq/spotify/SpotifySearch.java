@@ -30,6 +30,7 @@ public class SpotifySearch {
         try {
             return searchTracksRequest.execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
+            e.printStackTrace();
             return null;
         }
     }
