@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
 @AllArgsConstructor  // 모든 매개변수 생성자
@@ -30,6 +33,6 @@ public class UserQuestionEntity {
     @ManyToOne
     private CommonQuestionEntity commonQuestion;  // 공통 질문 아이디 - fk (CommonQuestion)
 
-    /*@OneToMany(mappedBy = "userQuestion")
-    private List<AnswerEntity> answerPageAnsList = new ArrayList<>();  // Answer 양방향*/
+    @OneToMany(mappedBy = "userQuestion")
+    private List<AnswerEntity> answerPageAnsList = new ArrayList<>();  // Answer 양방향
 }
