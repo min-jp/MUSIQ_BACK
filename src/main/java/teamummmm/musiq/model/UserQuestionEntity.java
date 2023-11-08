@@ -32,4 +32,12 @@ public class UserQuestionEntity {
 
     @OneToMany(mappedBy = "userQuestion")
     private List<AnswerEntity> answerPageAnsList = new ArrayList<>();  // Answer 양방향
+
+    public void updateAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    public void updateCallCount(int callCount) {
+        this.callCount = callCount;
+    }
 }
