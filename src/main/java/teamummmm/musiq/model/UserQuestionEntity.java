@@ -1,10 +1,7 @@
 package teamummmm.musiq.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
@@ -13,7 +10,7 @@ import java.util.List;
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
 @AllArgsConstructor  // 모든 매개변수 생성자
-@Data // getter, setter
+@Getter
 @Entity
 @Table(name = "UserQuestion")
 public class UserQuestionEntity {
