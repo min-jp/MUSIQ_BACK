@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
@@ -21,5 +22,6 @@ public class UserProfileEntity {
 
     private String userName; // 사용자 이름
 
+    @ColumnDefault("0")
     private int consecutiveDates;  // 연속으로 대답한 날
 }
