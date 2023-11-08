@@ -1,5 +1,6 @@
 package teamummmm.musiq.spotify;
 
+import com.neovisionaries.i18n.CountryCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
@@ -25,6 +26,7 @@ public class SpotifySearch {
 
         final SearchTracksRequest searchTracksRequest = spotifyApi
                 .searchTracks(q)
+                .market(CountryCode.KR)
                 .build();
 
         try {
