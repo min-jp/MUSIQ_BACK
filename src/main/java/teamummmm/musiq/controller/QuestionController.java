@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import teamummmm.musiq.dto.ErrorDTO;
 import teamummmm.musiq.dto.RequestQuestionDTO;
-import teamummmm.musiq.dto.ResponseDTO;
 import teamummmm.musiq.service.QuestionService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor  // 생성자 주입
@@ -30,18 +28,13 @@ public class QuestionController {
 
             RequestQuestionDTO dto = service.mainQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
 
-            ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
-                    .data(List.of(dto))
-                    .build();  // UserQuestionDTO 이용하여 ResponseDTO 초기화
-
-            return ResponseEntity.ok().body(response);  // ResponseDTO 리턴
+            return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
-            String error = e.getMessage();
-            ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
-                    .error(error)
+            ErrorDTO errorDTO = ErrorDTO.builder()
+                    .error(e.getMessage())
                     .build();
 
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(errorDTO);
         }
     }
 
@@ -57,18 +50,13 @@ public class QuestionController {
 
             RequestQuestionDTO dto = service.answeredQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
 
-            ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
-                    .data(List.of(dto))
-                    .build();  // UserQuestionDTO 이용하여 ResponseDTO 초기화
-
-            return ResponseEntity.ok().body(response);  // ResponseDTO 리턴
+            return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
-            String error = e.getMessage();
-            ResponseDTO<RequestQuestionDTO> response = ResponseDTO.<RequestQuestionDTO>builder()
-                    .error(error)
+            ErrorDTO errorDTO = ErrorDTO.builder()
+                    .error(e.getMessage())
                     .build();
 
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest().body(errorDTO);
         }
     }
 }
