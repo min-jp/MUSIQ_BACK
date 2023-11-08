@@ -16,13 +16,5 @@ public class SearchResultDTO {
 
     private String artist_name;
 
-    private CoverImage cover_image;
-
-    @Builder
-    @Data
-    public static class CoverImage {
-        private String url;
-        private int height;
-        private int width;
-    }
+    private String cover_url;
 }

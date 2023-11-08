@@ -43,17 +43,12 @@ public class SearchService {
                     String artistName = Arrays.stream(item.getArtists()).findFirst().get().getName();  // 아티스트 이름
 
                     Image image = Arrays.stream(item.getAlbum().getImages()).findFirst().get();  // 커버 이미지
-                    SearchResultDTO.CoverImage coverImage = SearchResultDTO.CoverImage.builder()
-                            .height(image.getHeight())
-                            .width(image.getWidth())
-                            .url(image.getUrl())
-                            .build();
 
                     SearchResultDTO dto = SearchResultDTO.builder()  // dto 생성
                             .music_name(item.getName())
                             .music_id(item.getId())
                             .artist_name(artistName)
-                            .cover_image(coverImage)
+                            .cover_url(image.getUrl())
                             .build();
                     return dto;
                 })
