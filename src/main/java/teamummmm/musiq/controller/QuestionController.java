@@ -19,14 +19,10 @@ public class QuestionController {
     @GetMapping("/main")
     public ResponseEntity<?> mainQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
-            @RequestParam(value = "refresh") boolean refresh
+            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh
     ) {
         try {
-            // TODO
-            //  유저 아이디
-            Long temporaryUserId = 1L;  // 임시 유저 아이디
-
-            RequestQuestionDTO dto = service.mainQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.mainQuestionService(userId, refresh);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
@@ -41,14 +37,10 @@ public class QuestionController {
     @GetMapping("/answered")
     public ResponseEntity<?> answeredQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
-            @RequestParam(value = "refresh") boolean refresh
+            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh
     ) {
         try {
-            // TODO
-            //  유저 아이디
-            Long temporaryUserId = 1L;  // 임시 유저 아이디
-
-            RequestQuestionDTO dto = service.answeredQuestionService(temporaryUserId, refresh);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
