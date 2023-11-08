@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import teamummmm.musiq.dto.ErrorDTO;
+import teamummmm.musiq.dto.UserProfileDTO;
 import teamummmm.musiq.service.TempAuthService;
 
 // FIXME
@@ -22,9 +23,9 @@ public class TempAuthController {
             @RequestParam(value = "login_id") String loginId
     ) {
         try {
-            service.registerService(loginId);
+            UserProfileDTO dto = service.registerService(loginId);
 
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(dto);
         } catch (Exception e) {
             ErrorDTO errorDTO = ErrorDTO.builder()
                     .error(e.getMessage())

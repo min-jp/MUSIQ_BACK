@@ -2,6 +2,7 @@ package teamummmm.musiq.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import teamummmm.musiq.dto.UserProfileDTO;
 import teamummmm.musiq.model.CommonQuestionEntity;
 import teamummmm.musiq.model.UserProfileEntity;
 import teamummmm.musiq.model.UserQuestionEntity;
@@ -18,7 +19,7 @@ public class TempAuthService {
     private final UserQuestionRepository userQuestionRepository;
     private final CommonQuestionRepository commonQuestionRepository;
 
-    public void registerService(final String loginId) {
+    public UserProfileDTO registerService(final String loginId) {
         if (userProfileRepository.existsByLoginId(loginId)) {  // 로그인 정보 확인
             throw new RuntimeException("Username already exists");  // 존재하면 오류
         }
@@ -39,5 +40,7 @@ public class TempAuthService {
 
             userQuestionRepository.save(userQuestionEntity);  //저장
         });
+
+        return UserProfileDTO.builder().user_id(savedEntity.getUserId()).build();  // 리턴
     }
 }
