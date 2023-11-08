@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity, Long> {
-    List<UserQuestionEntity> findByUser_UserId(Long userId);
+    List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(Long userId);
+
+    List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsEmpty(Long userId);
 }

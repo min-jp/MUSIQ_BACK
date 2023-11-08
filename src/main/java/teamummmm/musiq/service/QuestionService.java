@@ -17,15 +17,15 @@ public class QuestionService {
 
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
-        List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserId(userId);
+        List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsEmpty(userId);
 
         // TODO
         //  리프레시에 따른 로직 구현
         // 리프레시 여부 확인
-        if (refresh) {  // 일반 질문 호출
+        if (refresh) {  // 새로고침한 질문 호출
 
         }
-        else {  // 새로고침한 질문 호출
+        else {  // 일반 질문 호출
 
         }
 
@@ -33,22 +33,6 @@ public class QuestionService {
         //  선택 코드 위 로직 안에 넣기
         // 엔티티 중 선택
         UserQuestionEntity entity = entities.get(0);
-
-        // TODO
-        //  데이터 적재 코드 재사용
-        // 데이터 적재 코드
-        /*
-        List<RequestQuestionDTO> dtos = entities.stream()  // stream 이용해서 변환
-                .map(entity -> {
-                    RequestQuestionDTO dto = RequestQuestionDTO.builder()
-                            .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
-                            .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
-                            .emoji(entity.getCommonQuestion().getEmoji())  // 질문 이모지 (emoji)
-                            .build();
-                    return dto;
-                })
-                .collect(Collectors.toList());
-        */
 
         // 데이터 적재 코드
         RequestQuestionDTO dto = RequestQuestionDTO.builder()
@@ -71,15 +55,15 @@ public class QuestionService {
 
     public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
-        List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserId(userId);
+        List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
 
         // TODO
         //  리프레시에 따른 로직 구현
         // 리프레시 여부 확인
-        if (refresh) {  // 일반 질문 호출
+        if (refresh) {  // 새로고침한 질문 호출
 
         }
-        else {  // 새로고침한 질문 호출
+        else {  // 일반 질문 호출
 
         }
 
