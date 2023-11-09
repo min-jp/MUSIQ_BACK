@@ -1,0 +1,40 @@
+package teamummmm.musiq.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import teamummmm.musiq.model.ColorVal;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class QuestionAnswerDTO {
+    private LocalDate answer_date;  // 대답 날짜 (answerDate)
+
+    private ColorVal day_color;  // 그날의 색깔
+
+    private List<Answer> answers;  // 답변들
+
+    @Builder
+    @Data
+    public static class Answer {
+        private Long answer_id;  // 오브젝트 아이디 (answerId)
+        private String caption;  // 캡션 (caption)
+        private Music music;  // 음악
+
+        @Builder
+        @Data
+        public static class Music {
+            private String music_id;  // 음악 아이디 (musicId)
+            private String music_color;  // 음악별 색깔 (musicColor)
+            private String music_name;  // 음악 제목
+            private String artist_name;  // 아티스트 이름
+            private String cover_url;  // 앨범 커버 url
+        }
+    }
+}
