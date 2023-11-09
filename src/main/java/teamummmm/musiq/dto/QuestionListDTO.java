@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import teamummmm.musiq.model.ColorVal;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,7 +37,7 @@ public class QuestionListDTO {
     @Data
     public static class AnswerDate {
         private LocalDate answer_date;  // 대답 날짜 (answerDate)
-        private String day_color;  // 그날의 색깔
+        private ColorVal day_color;  // 그날의 색깔
         private List<Answer> answers;  // 답변들
 
         @Builder
