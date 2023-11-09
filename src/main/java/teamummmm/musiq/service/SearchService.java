@@ -79,6 +79,17 @@ public class SearchService {
 
         answerRepository.save(answerEntity);  // 저장
 
+        if (answerRepository.existsSingleEntryByUserQuestionAndAnswerDate(questionId, LocalDate.now())) {  // 오늘 처음으로 질문에 답변을 추가한 경우
+            Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
+            UserQuestionEntity updateEntity = optionalUpdateEntity.get();
+
+            updateEntity.updateAnswerCount(updateEntity.getAnswerCount() + 1);  // 카운트 1 증가
+
+            userQuestionRepository.save(updateEntity);  // 저장
+        }
+
+
+
         ColorVal colorVal = answerRepository.findBestColor(questionId);  // 색상 업데이트
 
         return SearchAddSongDTO.builder().main_color(colorVal).build();  // SearchAddSongDTO 생성해서 리턴
