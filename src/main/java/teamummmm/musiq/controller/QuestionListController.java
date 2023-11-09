@@ -43,9 +43,9 @@ public class QuestionListController {
             @RequestParam(value = "question_id") Long questionId
     ) {
         try {
-            List<QuestionAnswerDTO> dtos = service.answerListService(questionId);  // List<QuestionAnswerDTO> 생성
+            QuestionAnswerDTO dto = service.answerListService(questionId);  // QuestionAnswerDTO 생성
 
-            return ResponseEntity.ok().body(dtos);  // RequestQuestionDTO 리턴
+            return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
             ErrorDTO errorDTO = ErrorDTO.builder()
                     .error(e.getMessage())

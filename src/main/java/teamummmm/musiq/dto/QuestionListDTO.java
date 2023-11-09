@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamummmm.musiq.model.ColorVal;
 
-import java.util.List;
-
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,14 +18,4 @@ public class QuestionListDTO {
     private String emoji;  // 질문 이모지 (emoji)
 
     private ColorVal main_color;  // 질문의 메인 컬러
-
-    private List<ColorCount> color_count;  // 색상별 카운트
-
-    @Builder
-    @Data
-    public static class ColorCount {
-        private ColorVal color_name;  // 색상 이름
-        private Long count;  // 색상 count
-    }
-
 }
