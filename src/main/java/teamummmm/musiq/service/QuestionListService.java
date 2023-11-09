@@ -31,7 +31,6 @@ public class QuestionListService {
                             .question_message(commonQuestion.getQuestionMsg())
                             .emoji(commonQuestion.getEmoji())
                             .main_color(answerRepository.findBestColor(entity.getUserQuestionId()))  // best color 찾기
-                            //.color_count(answerRepository.countMusicColorsByUserQuestionId(entity.getUserQuestionId()))
                             .color_count(colorCountCal(entity))  // 컬러 비율 계산
                             .build();
                 })
@@ -39,7 +38,7 @@ public class QuestionListService {
     }
 
     private List<QuestionListDTO.ColorCount> colorCountCal(UserQuestionEntity entity) {  // 컬러 비율 계산
-        List<Object[]> objects = answerRepository.countMusicColorsByUserQuestionId(entity.getUserQuestionId());
+        List<Object[]> objects = answerRepository.countMusicColors(entity.getUserQuestionId());
 
         return objects.stream().map(object -> QuestionListDTO.ColorCount.builder()
                 .color_name((ColorVal) object[0])  // 컬러 이름

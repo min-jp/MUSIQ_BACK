@@ -76,7 +76,7 @@ public class SearchService {
 
         answerRepository.save(answerEntity);  // 저장
 
-        if (answerRepository.existsSingleEntryByUserQuestionAndAnswerDate(questionId, LocalDate.now())) {  // 오늘 처음으로 질문에 답변을 추가한 경우
+        if (answerRepository.isFirstAnswer(questionId, LocalDate.now())) {  // 오늘 처음으로 질문에 답변을 추가한 경우
             Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
             UserQuestionEntity updateEntity = optionalUpdateEntity.get();
 
