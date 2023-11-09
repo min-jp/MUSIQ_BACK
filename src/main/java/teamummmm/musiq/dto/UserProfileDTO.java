@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class UserProfileDTO {
-    private Long user_id;
+    private Long user_id;  // 유저 아이디
 }

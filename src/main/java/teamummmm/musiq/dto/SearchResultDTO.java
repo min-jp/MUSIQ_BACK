@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 public class SearchResultDTO {
     private String music_id;  // 음악 아이디 (musicId)
 
-    private String music_name;
+    private String music_name;  // 음악 제목
 
-    private String artist_name;
+    private String artist_name;  // 아티스트 이름
 
-    private String cover_url;
+    private String cover_url;  // 앨범 커버 url
 }
