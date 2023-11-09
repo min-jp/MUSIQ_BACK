@@ -27,7 +27,7 @@ public class QuestionListDTO {
     @Data
     public static class ColorCount {
         private ColorVal color_name;  // 색상 이름
-        private int count;  // 색상 count
+        private Long count;  // 색상 count
     }
 
 }
