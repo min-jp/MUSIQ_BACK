@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import teamummmm.musiq.model.AnswerEntity;
 import teamummmm.musiq.model.ColorVal;
 
+import java.time.LocalDate;
+
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     @Query("SELECT a.musicInfo.musicColor " +
@@ -15,4 +17,10 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
             "ORDER BY COUNT(a.musicInfo.musicColor) DESC " +
             "LIMIT 1")
     ColorVal findBestColor(Long questionId);  // 질문의 메인 컬러 찾기
+
+    @Query("SELECT COUNT(e)  = 1 " +
+            "FROM AnswerEntity e " +
+            "WHERE e.userQuestion.userQuestionId = ?1 " +
+            "AND e.answerDate = ?2")
+    boolean existsSingleEntryByUserQuestionAndAnswerDate(Long userQuestionId, LocalDate nowDate);
 }
