@@ -32,7 +32,7 @@ public class SpotifySearch {
         try {
             return searchTracksRequest.execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            e.printStackTrace();
+            System.out.println("\nError: " + e.getMessage());
             return null;
         }
     }

@@ -31,6 +31,8 @@ public class SearchController {
                     .error(e.getMessage())
                     .build();
 
+            System.out.println("\nError: " + e.getMessage());
+
             return ResponseEntity.badRequest().body(errorDTO);
         }
     }
@@ -49,6 +51,8 @@ public class SearchController {
             ErrorDTO errorDTO = ErrorDTO.builder()
                     .error(e.getMessage())
                     .build();
+
+            System.out.println("\nError: " + e.getMessage());
 
             return ResponseEntity.badRequest().body(errorDTO);
         }

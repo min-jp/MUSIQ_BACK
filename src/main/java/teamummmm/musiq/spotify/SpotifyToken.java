@@ -36,7 +36,7 @@ public class SpotifyToken {
             final ClientCredentials clientCredentials = clientCredentialsRequest.execute();  // 실행
             accessToken = clientCredentials.getAccessToken();  // 엑세스 토큰
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            e.printStackTrace();
+            System.out.println("\nError: " + e.getMessage());
         }
     }
 

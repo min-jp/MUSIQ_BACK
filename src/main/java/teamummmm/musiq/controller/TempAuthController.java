@@ -31,6 +31,8 @@ public class TempAuthController {
                     .error(e.getMessage())
                     .build();
 
+            System.out.println("\nError: " + e.getMessage());
+
             return ResponseEntity.badRequest().body(errorDTO);
         }
     }

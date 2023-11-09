@@ -30,6 +30,8 @@ public class QuestionController {
                     .error(e.getMessage())
                     .build();
 
+            System.out.println("\nError: " + e.getMessage());
+
             return ResponseEntity.badRequest().body(errorDTO);
         }
     }
@@ -47,6 +49,8 @@ public class QuestionController {
             ErrorDTO errorDTO = ErrorDTO.builder()
                     .error(e.getMessage())
                     .build();
+
+            System.out.println("\nError: " + e.getMessage());
 
             return ResponseEntity.badRequest().body(errorDTO);
         }

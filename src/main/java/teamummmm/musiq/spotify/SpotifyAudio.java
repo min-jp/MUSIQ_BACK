@@ -29,7 +29,7 @@ public class SpotifyAudio {
         try {
             return getAudioFeaturesForTrackRequest.execute();
         } catch (IOException | SpotifyWebApiException | ParseException e) {
-            e.printStackTrace();
+            System.out.println("\nError: " + e.getMessage());
             return null;
         }
     }
