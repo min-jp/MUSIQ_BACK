@@ -38,23 +38,20 @@ public class SearchService {
 
         validateTrack(trackPaging);  // 검색 결과가 비었는지 검사
 
-        List<SearchResultDTO> dtos = Arrays.stream(trackPaging.getItems())  // stream 이용해서 변환
+        return Arrays.stream(trackPaging.getItems())  // stream 이용해서 변환
                 .map(item -> {
                     String artistName = Arrays.stream(item.getArtists()).findFirst().get().getName();  // 아티스트 이름
 
                     Image image = Arrays.stream(item.getAlbum().getImages()).findFirst().get();  // 커버 이미지
 
-                    SearchResultDTO dto = SearchResultDTO.builder()  // dto 생성
+                    return SearchResultDTO.builder()  // dto 생성
                             .music_name(item.getName())
                             .music_id(item.getId())
                             .artist_name(artistName)
                             .cover_url(image.getUrl())
                             .build();
-                    return dto;
                 })
                 .collect(Collectors.toList());
-
-        return dtos;
     }
 
     private void validateTrack(final Paging<Track> trackPaging) {  // 검색 결과 검사

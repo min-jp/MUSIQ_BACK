@@ -38,15 +38,16 @@ public class QuestionService {
         // 엔티티 중 선택
         UserQuestionEntity entity = entities.get(0);
 
+        // 콜 수 업데이트
+
         // 데이터 적재 코드
-        RequestQuestionDTO dto = RequestQuestionDTO.builder()
+
+        // 리턴
+        return RequestQuestionDTO.builder()
                 .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
                 .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
                 .emoji(entity.getCommonQuestion().getEmoji())  // 질문 이모지 (emoji)
                 .build();
-
-        // 리턴
-        return dto;
     }
 
     // TODO
@@ -80,16 +81,17 @@ public class QuestionService {
         // 엔티티 중 선택
         UserQuestionEntity entity = entities.get(0);
 
+        // 콜 수 업데이트
+
         // 데이터 적재 코드
-        RequestQuestionDTO dto = RequestQuestionDTO.builder()
+
+        // 리턴
+        return RequestQuestionDTO.builder()
                 .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
                 .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
                 .emoji(entity.getCommonQuestion().getEmoji())  // 질문 이모지 (emoji)
                 .main_color(answerRepository.findBestColor(entity.getUserQuestionId()))  // best color
                 .build();
-
-        // 리턴
-        return dto;
     }
 
     // TODO
