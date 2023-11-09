@@ -43,3 +43,7 @@ out/
 
 ### spotify API secret key
 application-secret.properties
+
+### my test code
+TestController.java
+TestService.java
