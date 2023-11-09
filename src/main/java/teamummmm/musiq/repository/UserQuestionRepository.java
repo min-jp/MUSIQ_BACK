@@ -11,4 +11,6 @@ public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity
     List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(Long userId);
 
     List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsEmpty(Long userId);
+
+    List<UserQuestionEntity> findByUser_UserId(Long userId);
 }
