@@ -35,8 +35,8 @@ public class SearchService {
 
         return Arrays.stream(trackPaging.getItems())  // stream 이용해서 변환 후 리턴
                 .map(item -> {
-                    ArtistSimplified artist = Arrays.stream(item.getArtists()).findFirst().get();  // 아티스트
-                    Image image = Arrays.stream(item.getAlbum().getImages()).findFirst().get();  // 커버 이미지
+                    ArtistSimplified artist = item.getArtists()[0];  // 아티스트
+                    Image image = item.getAlbum().getImages()[0];  // 커버 이미지
 
                     return SearchResultDTO.builder()
                             .music_name(item.getName())
