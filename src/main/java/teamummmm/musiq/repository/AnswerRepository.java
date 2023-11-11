@@ -31,4 +31,7 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
             "GROUP BY a.musicInfo.musicColor " +
             "ORDER BY colorCount DESC")
     List<Object[]> countMusicColors(Long userQuestionId);
+
+    List<AnswerEntity> findByUserQuestion_UserQuestionId(Long userQuestionId);
+    // TODO 주석 달기
 }
