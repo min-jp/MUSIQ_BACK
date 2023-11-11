@@ -2,10 +2,7 @@ package teamummmm.musiq.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import se.michaelthelin.spotify.model_objects.specification.AudioFeatures;
-import se.michaelthelin.spotify.model_objects.specification.Image;
-import se.michaelthelin.spotify.model_objects.specification.Paging;
-import se.michaelthelin.spotify.model_objects.specification.Track;
+import se.michaelthelin.spotify.model_objects.specification.*;
 import teamummmm.musiq.dto.SearchAddSongDTO;
 import teamummmm.musiq.dto.SearchResultDTO;
 import teamummmm.musiq.model.AnswerEntity;
@@ -36,18 +33,17 @@ public class SearchService {
 
         validateTrack(trackPaging);  // 검색 결과가 비었는지 검사
 
-        return Arrays.stream(trackPaging.getItems())  // stream 이용해서 변환
+        return Arrays.stream(trackPaging.getItems())  // stream 이용해서 변환 후 리턴
                 .map(item -> {
-                    String artistName = Arrays.stream(item.getArtists()).findFirst().get().getName();  // 아티스트 이름
-
+                    ArtistSimplified artist = Arrays.stream(item.getArtists()).findFirst().get();  // 아티스트
                     Image image = Arrays.stream(item.getAlbum().getImages()).findFirst().get();  // 커버 이미지
 
-                    return SearchResultDTO.builder()  // dto 생성
+                    return SearchResultDTO.builder()
                             .music_name(item.getName())
                             .music_id(item.getId())
-                            .artist_name(artistName)
+                            .artist_name(artist.getName())
                             .cover_url(image.getUrl())
-                            .build();
+                            .build();  // dto 생성 후 리턴
                 })
                 .collect(Collectors.toList());
     }
