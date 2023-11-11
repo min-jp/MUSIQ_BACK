@@ -15,6 +15,7 @@ import teamummmm.musiq.repository.UserQuestionRepository;
 import teamummmm.musiq.spotify.SpotifyService;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -66,11 +67,11 @@ public class SearchService {
 
         Optional<UserQuestionEntity> optionalUserQuestion = userQuestionRepository.findById(questionId); // 질문 정보
 
-        AnswerEntity answerEntity = AnswerEntity.builder().answerDate(LocalDate.now()).musicInfo(musicInfo).userQuestion(optionalUserQuestion.get()).build(); // 답변 엔티티 생성
+        AnswerEntity answerEntity = AnswerEntity.builder().answerDate(LocalDate.now(ZoneId.of("Asia/Seoul"))).musicInfo(musicInfo).userQuestion(optionalUserQuestion.get()).build(); // 답변 엔티티 생성
 
         answerRepository.save(answerEntity);  // 저장
 
-        if (answerRepository.isFirstAnswer(questionId, LocalDate.now())) {  // 오늘 처음으로 질문에 답변을 추가한 경우
+        if (answerRepository.isFirstAnswer(questionId, LocalDate.now(ZoneId.of("Asia/Seoul")))) {  // 오늘 처음으로 질문에 답변을 추가한 경우
             Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
             UserQuestionEntity updateEntity = optionalUpdateEntity.get();
 
