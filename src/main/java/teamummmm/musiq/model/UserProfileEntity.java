@@ -15,6 +15,7 @@ public class UserProfileEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;  // 오브젝트 아이디
 
+    @Column(unique = true)
     private String loginId;  // 로그인 유저 아이디
 
     private String userName; // 사용자 이름
