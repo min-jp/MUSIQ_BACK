@@ -15,8 +15,7 @@ import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.MusicInfoRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
-import teamummmm.musiq.spotify.SpotifyAudio;
-import teamummmm.musiq.spotify.SpotifySearch;
+import teamummmm.musiq.spotify.SpotifyService;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -27,14 +26,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor  // 생성자 주입
 public class SearchService {
-    private final SpotifySearch spotifySearch;
-    private final SpotifyAudio spotifyAudio;
+    private final SpotifyService spotifyService;
     private final AnswerRepository answerRepository;
     private final MusicInfoRepository musicInfoRepository;
     private final UserQuestionRepository userQuestionRepository;
 
     public List<SearchResultDTO> searchService (final String searchText) {  // 곡 검색
-        Paging<Track> trackPaging = spotifySearch.searchTracks(searchText);
+        Paging<Track> trackPaging = spotifyService.searchTracks(searchText);
 
         validateTrack(trackPaging);  // 검색 결과가 비었는지 검사
 
@@ -93,7 +91,7 @@ public class SearchService {
     }
 
     private MusicInfoEntity setMusicInfo(String musicId) {  // 음악 정보가 기존에 없는 경우
-        AudioFeatures audioFeatures = spotifyAudio.getAudioFeatures(musicId);  // 음악 정보
+        AudioFeatures audioFeatures = spotifyService.getAudioFeatures(musicId);  // 음악 정보
 
         ColorVal colorVal;  // 색 정보
 
