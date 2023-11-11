@@ -43,4 +43,14 @@ public class TempAuthService {
 
         return UserProfileDTO.builder().user_id(savedEntity.getUserId()).build();  // 리턴
     }
+
+    public UserProfileDTO loginService(final String loginId) {
+        if (!userProfileRepository.existsByLoginId(loginId)) {  // 로그인 정보 확인
+            throw new RuntimeException("User does not exist");  // 존재하지 않으면 오류
+        }
+
+        Long userId = userProfileRepository.findByLoginId(loginId).getUserId();  // 유저 아이디 검색
+
+        return UserProfileDTO.builder().user_id(userId).build();  // 리턴
+    }
 }
