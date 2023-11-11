@@ -7,4 +7,6 @@ import teamummmm.musiq.model.UserProfileEntity;
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfileEntity, Long> {
     boolean existsByLoginId(String loginId);
+
+    UserProfileEntity findByLoginId(String loginId);
 }
