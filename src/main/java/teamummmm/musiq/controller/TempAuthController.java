@@ -2,10 +2,7 @@ package teamummmm.musiq.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import teamummmm.musiq.dto.ErrorDTO;
 import teamummmm.musiq.dto.UserProfileDTO;
 import teamummmm.musiq.service.TempAuthService;
@@ -24,6 +21,25 @@ public class TempAuthController {
     ) {
         try {
             UserProfileDTO dto = service.registerService(loginId);
+
+            return ResponseEntity.ok().body(dto);
+        } catch (Exception e) {
+            ErrorDTO errorDTO = ErrorDTO.builder()
+                    .error(e.getMessage())
+                    .build();
+
+            System.out.println("\nError: " + e.getMessage());
+
+            return ResponseEntity.badRequest().body(errorDTO);
+        }
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> loginUser(
+            @RequestParam(value = "login_id") String loginId
+    ) {
+        try {
+            UserProfileDTO dto = service.loginService(loginId);
 
             return ResponseEntity.ok().body(dto);
         } catch (Exception e) {
