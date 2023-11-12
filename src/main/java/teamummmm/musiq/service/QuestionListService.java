@@ -87,6 +87,7 @@ public class QuestionListService {
 
                                 return QuestionAnswerDTO.AnswerDate.Answer.builder()
                                         .answer_id(answer.getAnswerId())
+                                        .caption(answer.getCaption())
                                         .music(music)  // Music 객체 삽입
                                         .build();  // Answer 객체 생성 후 리턴
                             })
