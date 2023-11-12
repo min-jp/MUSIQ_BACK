@@ -3,6 +3,7 @@ package teamummmm.musiq.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import teamummmm.musiq.dto.CaptionDTO;
 import teamummmm.musiq.dto.ErrorDTO;
 import teamummmm.musiq.dto.PlaySongInfoDTO;
 import teamummmm.musiq.service.PlaySongService;
@@ -33,7 +34,7 @@ public class PlaySongController {
     }
 
     @PostMapping("/caption")
-    public ResponseEntity<?> captionController(
+    public ResponseEntity<?> addCaptionController(
             @RequestParam(value = "caption_text") String captionText,
             @RequestParam(value = "answer_id") Long answerId
     ) {
@@ -41,6 +42,25 @@ public class PlaySongController {
             service.addCaptionService(captionText, answerId);
 
             return ResponseEntity.ok().build();  // OK 리턴
+        } catch (Exception e) {
+            ErrorDTO errorDTO = ErrorDTO.builder()
+                    .error(e.getMessage())
+                    .build();
+
+            System.out.println("\nError: " + e.getMessage());
+
+            return ResponseEntity.badRequest().body(errorDTO);
+        }
+    }
+
+    @GetMapping("/caption")
+    public ResponseEntity<?> getCaptionController(
+            @RequestParam(value = "answer_id") Long answerId
+    ) {
+        try {
+            CaptionDTO dto = service.getCaptionService(answerId);
+
+            return ResponseEntity.ok().body(dto);  // OK 리턴
         } catch (Exception e) {
             ErrorDTO errorDTO = ErrorDTO.builder()
                     .error(e.getMessage())
