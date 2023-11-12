@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
 import se.michaelthelin.spotify.model_objects.specification.Image;
 import se.michaelthelin.spotify.model_objects.specification.Track;
+import teamummmm.musiq.dto.CaptionDTO;
 import teamummmm.musiq.dto.PlaySongInfoDTO;
 import teamummmm.musiq.model.AnswerEntity;
 import teamummmm.musiq.repository.AnswerRepository;
@@ -51,5 +52,14 @@ public class PlaySongService {
         answer.updateCaption(captionText);  // entity에 캡션 수정
 
         repository.save(answer);
+    }
+
+    public CaptionDTO getCaptionService(final Long answerId) {
+        Optional<AnswerEntity> entity = repository.findById(answerId);
+        AnswerEntity answer = entity.get();
+
+        return CaptionDTO.builder()
+                .caption_text(answer.getCaption())
+                .build();
     }
 }
