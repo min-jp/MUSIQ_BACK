@@ -25,4 +25,8 @@ public class AnswerEntity {
 
     @ManyToOne
     private UserQuestionEntity userQuestion;  // 질문 아이디 - fk (UserQuestion)
+
+    public void updateCaption(String caption) {
+        this.caption = caption;
+    }
 }
