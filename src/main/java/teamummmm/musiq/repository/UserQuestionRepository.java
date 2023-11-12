@@ -11,6 +11,4 @@ public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity
     List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(Long userId);  // 답변한 질문 리스트
 
     List<UserQuestionEntity> findByUser_UserIdAndAnswerPageAnsListIsEmpty(Long userId);  // 답변하지 않은 질문 리스트
-
-    List<UserQuestionEntity> findByUser_UserId(Long userId);  // 유저 아이디로 질문 찾기
 }
