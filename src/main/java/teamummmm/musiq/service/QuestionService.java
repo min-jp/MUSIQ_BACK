@@ -8,6 +8,7 @@ import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor  // 생성자 주입
@@ -36,7 +37,9 @@ public class QuestionService {
         // TODO
         //  선택 코드 위 로직 안에 넣기
         // 엔티티 중 선택
-        UserQuestionEntity entity = entities.get(0);
+        Random random = new Random();
+        int randomNum = random.nextInt(entities.size());
+        UserQuestionEntity entity = entities.get(randomNum);
 
         // 콜 수 업데이트
 
@@ -79,7 +82,9 @@ public class QuestionService {
         // TODO
         //  선택 코드 위 로직 안에 넣기
         // 엔티티 중 선택
-        UserQuestionEntity entity = entities.get(0);
+        Random random = new Random();
+        int randomNum = random.nextInt(entities.size());
+        UserQuestionEntity entity = entities.get(randomNum);
 
         // 콜 수 업데이트
 
