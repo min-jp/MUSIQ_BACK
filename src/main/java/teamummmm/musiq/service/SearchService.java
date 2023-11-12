@@ -87,7 +87,7 @@ public class SearchService {
         return SearchAddSongDTO.builder().main_color(colorVal).build();  // SearchAddSongDTO 생성해서 리턴
     }
 
-    private MusicInfoEntity setMusicInfo(String musicId) {  // 음악 정보가 기존에 없는 경우
+    private MusicInfoEntity setMusicInfo(final String musicId) {  // 음악 정보가 기존에 없는 경우
         AudioFeatures audioFeatures = spotifyService.getAudioFeatures(musicId);  // 음악 정보
 
         ColorVal colorVal;  // 색 정보

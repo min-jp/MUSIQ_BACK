@@ -25,7 +25,7 @@ public class QuestionListService {
     private final AnswerRepository answerRepository;
     private final SpotifyService spotifyService;
 
-    public List<QuestionListDTO> questionListService(Long userId) {
+    public List<QuestionListDTO> questionListService(final Long userId) {
         List<UserQuestionEntity> entities =  userQuestionRepository.findByUser_UserId(userId);
 
         return entities.stream()
@@ -42,14 +42,14 @@ public class QuestionListService {
                 .toList();
     }
 
-    public QuestionAnswerDTO answerListService(Long questionId) {
+    public QuestionAnswerDTO answerListService(final Long questionId) {
         return QuestionAnswerDTO.builder()
                 .color_counts(colorCountCal(questionId))
                 .answer_dates(groupByDate(questionId))
                 .build();  // QuestionAnswerDTO 생성 후 리턴
     }
 
-    private List<QuestionAnswerDTO.ColorCount> colorCountCal(Long questionId) {  // 컬러 비율 계산
+    private List<QuestionAnswerDTO.ColorCount> colorCountCal(final Long questionId) {  // 컬러 비율 계산
         List<Object[]> objects = answerRepository.countMusicColors(questionId);
 
         return objects.stream().map(object -> QuestionAnswerDTO.ColorCount.builder()
@@ -59,7 +59,7 @@ public class QuestionListService {
                 .toList();
     }
 
-    private List<QuestionAnswerDTO.AnswerDate> groupByDate(Long questionId) {  // 날짜별로 데이터 묶어서 처리
+    private List<QuestionAnswerDTO.AnswerDate> groupByDate(final Long questionId) {  // 날짜별로 데이터 묶어서 처리
         List<AnswerEntity> entities = answerRepository.findByUserQuestion_UserQuestionId(questionId);
 
         Map<LocalDate, List<AnswerEntity>> groupedByDate = entities.stream()
