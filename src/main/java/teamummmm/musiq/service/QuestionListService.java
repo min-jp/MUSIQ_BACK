@@ -26,7 +26,7 @@ public class QuestionListService {
     private final SpotifyService spotifyService;
 
     public List<QuestionListDTO> questionListService(final Long userId) {
-        List<UserQuestionEntity> entities =  userQuestionRepository.findByUser_UserId(userId);
+        List<UserQuestionEntity> entities =  userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
 
         return entities.stream()
                 .map(entity -> {
