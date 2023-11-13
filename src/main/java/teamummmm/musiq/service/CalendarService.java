@@ -28,11 +28,11 @@ public class CalendarService {
                 .collect(Collectors.groupingBy(AnswerEntity::getAnswerDate));  // 날짜별로 그룹핑 후 Map 객체 생성
 
         // 연속 일 수 찾기
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(3); // 어제 날짜로 설정
-        Long count = 0L;
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1); // 어제 날짜로 설정
+        Long consecutiveDates = 0L;  // 연속 날짜
 
-        while (groupByDate.containsKey(currentDate)) {
-            count++;
+        while (groupByDate.containsKey(currentDate)) {  // 연속된 날짜 탐색
+            consecutiveDates++;
             currentDate = currentDate.minusDays(1); // 이전 날짜로 이동
         }
 
@@ -56,9 +56,9 @@ public class CalendarService {
                 }).toList();  // List<CalendarDataDTO.SelectedDate> 객체 생성
 
         return CalendarDataDTO.builder()
-                .consecutive_dates(count)
+                .consecutive_dates(consecutiveDates)
                 .selected_dates(selectedDates)
-                .build();
+                .build();  // CalendarDataDTO 생성 후 리턴
     }
 
     public List<CalendarDateDTO> dateService(final LocalDate selectedDate) {
