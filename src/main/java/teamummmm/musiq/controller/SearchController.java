@@ -1,7 +1,6 @@
 package teamummmm.musiq.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import teamummmm.musiq.dto.ErrorDTO;
@@ -45,7 +44,7 @@ public class SearchController {
         try {
             SearchAddSongDTO dto = service.addSongService(questionId, musicId);  // SearchAddSongDTO 생성
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(dto);  // SearchAddSongDTO 리턴 (201 CREATED)
+            return ResponseEntity.ok().body(dto);  // SearchAddSongDTO 리턴
         }
         catch (Exception e) {
             ErrorDTO errorDTO = ErrorDTO.builder()

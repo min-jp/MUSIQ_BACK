@@ -80,8 +80,6 @@ public class SearchService {
             userQuestionRepository.save(updateEntity);  // 저장
         }
 
-
-
         ColorVal colorVal = answerRepository.findBestColor(questionId);  // 색상 업데이트
 
         return SearchAddSongDTO.builder().main_color(colorVal.ordinal()).build();  // SearchAddSongDTO 생성해서 리턴
