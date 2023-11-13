@@ -3,6 +3,7 @@ package teamummmm.musiq.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import teamummmm.musiq.dto.RequestQuestionDTO;
+import teamummmm.musiq.model.ColorVal;
 import teamummmm.musiq.model.UserQuestionEntity;
 import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
@@ -49,7 +50,7 @@ public class QuestionService {
         return RequestQuestionDTO.builder()
                 .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
                 .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
-                .main_color(8)
+                .main_color(ColorVal.DEFAULT.ordinal())
                 .emoji(entity.getCommonQuestion().getEmoji())  // 질문 이모지 (emoji)
                 .build();
     }
