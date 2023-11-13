@@ -90,9 +90,9 @@ public class SearchService {
 
         ColorVal colorVal;  // 색 정보
 
-        float danceability = audioFeatures.getDanceability();  // danceability
-        float energy = audioFeatures.getEnergy();  // energy
-        float valence = audioFeatures.getValence();  // valence
+        Float danceability = audioFeatures.getDanceability();  // danceability
+        Float energy = audioFeatures.getEnergy();  // energy
+        Float valence = audioFeatures.getValence();  // valence
 
         // 컬러 결정 방법
         if (danceability < 0.5 && energy < 0.5 && valence < 0.5) {
