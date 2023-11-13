@@ -2,11 +2,16 @@ package teamummmm.musiq.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import se.michaelthelin.spotify.model_objects.specification.ArtistSimplified;
+import se.michaelthelin.spotify.model_objects.specification.Image;
+import se.michaelthelin.spotify.model_objects.specification.Track;
 import teamummmm.musiq.dto.CalendarDataDTO;
 import teamummmm.musiq.dto.CalendarDateDTO;
 import teamummmm.musiq.model.AnswerEntity;
 import teamummmm.musiq.model.ColorVal;
+import teamummmm.musiq.model.MusicInfoEntity;
 import teamummmm.musiq.repository.AnswerRepository;
+import teamummmm.musiq.spotify.SpotifyService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -20,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor  // 생성자 주입
 public class CalendarService {
     private final AnswerRepository repository;
+    private final SpotifyService spotifyService;
 
     public CalendarDataDTO calendarDataService(final Long userId) {
         List<AnswerEntity> entities = repository.findByUserQuestion_User_UserId(userId);  // List<AnswerEntity> 찾기
@@ -61,7 +67,36 @@ public class CalendarService {
                 .build();  // CalendarDataDTO 생성 후 리턴
     }
 
-    public List<CalendarDateDTO> dateService(final LocalDate selectedDate) {
-        return new ArrayList<>();
+    public List<CalendarDateDTO> dateService(final LocalDate selectedDate, final Long userId) {
+        List<AnswerEntity> entities = repository.findByAnswerDateAndUserQuestion_User_UserId(selectedDate, userId);
+
+        Map<ColorVal, List<AnswerEntity>> groupByColor = entities.stream()
+                .collect(Collectors.groupingBy(item -> item.getMusicInfo().getMusicColor()));
+
+        return groupByColor.entrySet().stream()
+                .map(entry -> {
+                    List<CalendarDateDTO.Music> musicList = new ArrayList<>();  // music
+                    entry.getValue()
+                            .forEach(answer -> {
+                                MusicInfoEntity musicInfo = answer.getMusicInfo();  // MusicInfoEntity
+
+                                Track track = spotifyService.getTrack(musicInfo.getMusicId());  // 트랙 가져오기
+
+                                ArtistSimplified artist = track.getArtists()[0];  // 아티스트
+                                Image image = track.getAlbum().getImages()[0];  // 커버 이미지
+
+                                musicList.add(CalendarDateDTO.Music.builder()
+                                        .music_id(musicInfo.getMusicId())
+                                        .music_name(track.getName())
+                                        .artist_name(artist.getName())
+                                        .cover_url(image.getUrl())
+                                        .build());  // Music 객체 생성 후 musicList에 추가
+                            });
+
+                    return CalendarDateDTO.builder()
+                            .Color(entry.getKey().ordinal())  // 색깔들
+                            .musics(musicList)  // 음악들
+                            .build();
+                }).toList();
     }
 }
