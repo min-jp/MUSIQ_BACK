@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamummmm.musiq.model.ColorVal;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class CalendarDateDTO {
-    private ColorVal Color;  // 색깔
+    private int Color;  // 색깔
 
     private List<Music> musics;  // 색깔별 음악들
 

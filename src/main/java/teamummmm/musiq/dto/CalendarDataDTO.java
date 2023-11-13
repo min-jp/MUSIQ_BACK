@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamummmm.musiq.model.ColorVal;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +21,6 @@ public class CalendarDataDTO {
     @Data
     public static class SelectedDate {
         private LocalDate selected_date;  // 날짜
-        private ColorVal day_color;  // 날짜의 색깔
+        private int day_color;  // 날짜의 색깔
     }
 }

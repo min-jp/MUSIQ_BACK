@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamummmm.musiq.model.ColorVal;
 
 @Builder
 @NoArgsConstructor
@@ -17,5 +16,5 @@ public class RequestQuestionDTO {
 
     private String emoji;  // 질문 이모지 (emoji)
 
-    private ColorVal main_color;  // 질문의 메인 컬러
+    private int main_color;  // 질문의 메인 컬러
 }
