@@ -9,6 +9,7 @@ import teamummmm.musiq.model.ColorVal;
 import teamummmm.musiq.repository.AnswerRepository;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class CalendarService {
                 .collect(Collectors.groupingBy(AnswerEntity::getAnswerDate));  // 날짜별로 그룹핑 후 Map 객체 생성
 
         // 연속 일 수 찾기
-        LocalDate currentDate = LocalDate.now().minusDays(3); // 어제 날짜로 설정
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(3); // 어제 날짜로 설정
         Long count = 0L;
 
         while (groupByDate.containsKey(currentDate)) {
