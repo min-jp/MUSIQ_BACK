@@ -41,10 +41,11 @@ public class CalendarController {
 
     @GetMapping("/date")
     public ResponseEntity<?> dateController(
-            @RequestParam(value = "selected_date") LocalDate selectedDate
+            @RequestParam(value = "selected_date") LocalDate selectedDate,
+            @RequestParam(value = "user_id") Long userId
             ) {
         try {
-            List<CalendarDateDTO> dtos = service.dateService(selectedDate); // List<CalendarDateDTO> 생성
+            List<CalendarDateDTO> dtos = service.dateService(selectedDate, userId); // List<CalendarDateDTO> 생성
 
             return ResponseEntity.ok().body(dtos);  // List<CalendarDateDTO> 리턴
         } catch (Exception e) {
