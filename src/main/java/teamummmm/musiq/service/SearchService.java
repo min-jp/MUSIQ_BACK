@@ -94,13 +94,23 @@ public class SearchService {
         float energy = audioFeatures.getEnergy();  // energy
         float valence = audioFeatures.getValence();  // valence
 
-        // FIXME
-        //  컬러 결정 방법
-        if (danceability < 0.5) {
+        // 컬러 결정 방법
+        if (danceability < 0.5 && energy < 0.5 && valence < 0.5) {
             colorVal = ColorVal.VALUE1;
-        }
-        else {
+        } else if (danceability < 0.5 && energy < 0.5 && valence >= 0.5) {
             colorVal = ColorVal.VALUE2;
+        } else if (danceability < 0.5 && energy >= 0.5 && valence < 0.5) {
+            colorVal = ColorVal.VALUE3;
+        } else if (danceability >= 0.5 && energy < 0.5 && valence < 0.5) {
+            colorVal = ColorVal.VALUE4;
+        } else if (danceability < 0.5 && energy >= 0.5 && valence >= 0.5) {
+            colorVal = ColorVal.VALUE5;
+        } else if (danceability >= 0.5 && energy < 0.5 && valence >= 0.5) {
+            colorVal = ColorVal.VALUE6;
+        } else if (danceability >= 0.5 && energy >= 0.5 && valence < 0.5) {
+            colorVal = ColorVal.VALUE7;
+        } else {
+            colorVal = ColorVal.VALUE8;
         }
 
         MusicInfoEntity newMusicInfo = MusicInfoEntity.builder().musicColor(colorVal).musicId(musicId).build();  // MusicInfoEntity 생성
