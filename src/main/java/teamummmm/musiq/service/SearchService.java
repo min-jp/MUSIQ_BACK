@@ -84,7 +84,7 @@ public class SearchService {
 
         ColorVal colorVal = answerRepository.findBestColor(questionId);  // 색상 업데이트
 
-        return SearchAddSongDTO.builder().main_color(colorVal).build();  // SearchAddSongDTO 생성해서 리턴
+        return SearchAddSongDTO.builder().main_color(colorVal.ordinal()).build();  // SearchAddSongDTO 생성해서 리턴
     }
 
     private MusicInfoEntity setMusicInfo(final String musicId) {  // 음악 정보가 기존에 없는 경우

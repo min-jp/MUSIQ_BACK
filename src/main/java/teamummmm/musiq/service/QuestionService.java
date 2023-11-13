@@ -95,7 +95,7 @@ public class QuestionService {
                 .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
                 .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
                 .emoji(entity.getCommonQuestion().getEmoji())  // 질문 이모지 (emoji)
-                .main_color(answerRepository.findBestColor(entity.getUserQuestionId()))  // best color
+                .main_color(answerRepository.findBestColor(entity.getUserQuestionId()).ordinal())  // best color
                 .build();
     }
 

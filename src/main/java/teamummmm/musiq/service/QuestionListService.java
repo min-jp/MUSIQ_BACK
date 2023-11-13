@@ -36,7 +36,7 @@ public class QuestionListService {
                             .question_id(entity.getUserQuestionId())
                             .question_message(commonQuestion.getQuestionMsg())
                             .emoji(commonQuestion.getEmoji())
-                            .main_color(answerRepository.findBestColor(entity.getUserQuestionId()))  // best color 찾기
+                            .main_color(answerRepository.findBestColor(entity.getUserQuestionId()).ordinal())  // best color 찾기
                             .build();
                 })
                 .toList();
@@ -53,7 +53,7 @@ public class QuestionListService {
         List<Object[]> objects = answerRepository.countMusicColors(questionId);
 
         return objects.stream().map(object -> QuestionAnswerDTO.ColorCount.builder()
-                .color_name((ColorVal) object[0])  // 컬러 이름
+                .color_name(((ColorVal) object[0]).ordinal())  // 컬러 이름
                 .count((Long) object[1])  // count
                 .build())
                 .toList();
@@ -79,7 +79,7 @@ public class QuestionListService {
 
                                 QuestionAnswerDTO.AnswerDate.Answer.Music music = QuestionAnswerDTO.AnswerDate.Answer.Music.builder()
                                         .music_id(musicInfo.getMusicId())
-                                        .music_color(musicInfo.getMusicColor())
+                                        .music_color(musicInfo.getMusicColor().ordinal())
                                         .music_name(track.getName())
                                         .artist_name(artist.getName())
                                         .cover_url(image.getUrl())
@@ -104,7 +104,7 @@ public class QuestionListService {
 
                     return QuestionAnswerDTO.AnswerDate.builder()
                             .answer_date(entry.getKey())
-                            .day_color(dayColor)
+                            .day_color(dayColor.ordinal())
                             .answers(answers)
                             .build();
                 })

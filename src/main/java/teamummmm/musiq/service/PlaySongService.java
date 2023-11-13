@@ -31,7 +31,7 @@ public class PlaySongService {
 
         PlaySongInfoDTO.Music music = PlaySongInfoDTO.Music.builder()
                 .music_id(answer.getMusicInfo().getMusicId())
-                .music_color(answer.getMusicInfo().getMusicColor())
+                .music_color(answer.getMusicInfo().getMusicColor().ordinal())
                 .music_name(track.getName())
                 .artist_name(artist.getName())
                 .cover_url(image.getUrl())
