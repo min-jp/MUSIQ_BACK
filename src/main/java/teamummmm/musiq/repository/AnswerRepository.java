@@ -33,4 +33,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     List<Object[]> countMusicColors(Long userQuestionId);  // 질문별 색깔 비율
 
     List<AnswerEntity> findByUserQuestion_UserQuestionId(Long userQuestionId);  // UserQuestionId로 AnswerEntity 찾기
+
+    List<AnswerEntity> findByUserQuestion_User_UserId(Long userId);  // UserId로 AnswerEntity 찾기
 }
