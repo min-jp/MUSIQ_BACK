@@ -21,6 +21,6 @@ public class CalendarDataDTO {
     @Data
     public static class SelectedDate {
         private LocalDate selected_date;  // 날짜
-        private int day_color;  // 날짜의 색깔
+        private Integer day_color;  // 날짜의 색깔
     }
 }

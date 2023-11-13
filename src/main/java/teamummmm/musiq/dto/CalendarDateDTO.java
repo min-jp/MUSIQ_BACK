@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class CalendarDateDTO {
-    private int Color;  // 색깔
+    private Integer Color;  // 색깔
 
     private List<Music> musics;  // 색깔별 음악들
 

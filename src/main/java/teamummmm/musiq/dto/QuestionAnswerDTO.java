@@ -20,7 +20,7 @@ public class QuestionAnswerDTO {
     @Builder
     @Data
     public static class ColorCount {
-        private int color_name;  // 색상 이름
+        private Integer color_name;  // 색상 이름
         private Long count;  // 색상 count
     }
 
@@ -28,7 +28,7 @@ public class QuestionAnswerDTO {
     @Data
     public static class AnswerDate {
         private LocalDate answer_date;  // 답변 날짜 (answerDate)
-        private int day_color;  // 그날의 색깔
+        private Integer day_color;  // 그날의 색깔
         private List<Answer> answers;  // 답변들
 
         @Builder
@@ -42,7 +42,7 @@ public class QuestionAnswerDTO {
             @Data
             public static class Music {
                 private String music_id;  // 음악 아이디 (musicId)
-                private int music_color;  // 음악별 색깔 (musicColor)
+                private Integer music_color;  // 음악별 색깔 (musicColor)
                 private String music_name;  // 음악 제목
                 private String artist_name;  // 아티스트 이름
                 private String cover_url;  // 앨범 커버 url

@@ -16,5 +16,5 @@ public class QuestionListDTO {
 
     private String emoji;  // 질문 이모지 (emoji)
 
-    private int main_color;  // 질문의 메인 컬러
+    private Integer main_color;  // 질문의 메인 컬러
 }

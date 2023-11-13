@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class PlaySongInfoDTO {
     private String question_message;  // 질문 내용
 
-    private boolean caption_exists;  // 캡션 존재 여부
+    private Boolean caption_exists;  // 캡션 존재 여부
 
     private Music music;  // music 객체
 
@@ -20,7 +20,7 @@ public class PlaySongInfoDTO {
     @Data
     public static class Music {
         private String music_id;  // 음악 아이디
-        private int music_color;  // 음악의 색깔
+        private Integer music_color;  // 음악의 색깔
         private String music_name;  // 음악 제목
         private String artist_name;  // 아티스트 이름
         private String cover_url;  // 앨범 커버 url
