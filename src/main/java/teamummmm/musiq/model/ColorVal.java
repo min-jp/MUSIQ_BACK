@@ -16,7 +16,5 @@ public enum ColorVal {
     VALUE5,
     VALUE6,
     VALUE7,
-    VALUE8,
-    VALUE9,
-    VALUE10
+    VALUE8
 }
