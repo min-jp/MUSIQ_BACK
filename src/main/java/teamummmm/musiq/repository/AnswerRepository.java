@@ -35,4 +35,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     List<AnswerEntity> findByUserQuestion_UserQuestionId(Long userQuestionId);  // UserQuestionId로 AnswerEntity 찾기
 
     List<AnswerEntity> findByUserQuestion_User_UserId(Long userId);  // UserId로 AnswerEntity 찾기
+
+    List<AnswerEntity> findByAnswerDateAndUserQuestion_User_UserId(LocalDate answerDate, Long userId);  // AnswerDate와 UserId로 AnswerEntity 찾기
 }
