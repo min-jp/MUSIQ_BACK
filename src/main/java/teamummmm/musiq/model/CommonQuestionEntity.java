@@ -20,13 +20,11 @@ public class CommonQuestionEntity {
 
     private CategoryVal category;  // 질문 카테고리
 
-    private float valence;  // 음악 valence
+    private Float valence;  // 음악 valence
 
-    private float tempo;  // 음악 tempo
+    private Float energy;  // 음악 energy
 
-    private float energy;  // 음악 energy
-
-    private float danceability;  // 음악 danceability
+    private Float danceability;  // 음악 danceability
 
     @OneToOne
     private CommonQuestionEntity followupQuestion;  // 후속질문 아이디 - fk(CommonQuestion)
