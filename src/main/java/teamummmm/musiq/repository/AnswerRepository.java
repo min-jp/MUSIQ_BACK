@@ -11,13 +11,13 @@ import java.util.List;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
-    // TODO
-    //  가장 큰 것이 여러개일 때 가장 최근에 답변한 색으로 변경
-    @Query("SELECT a.musicInfo.musicColor " +
-            "FROM AnswerEntity a " +
-            "WHERE a.userQuestion.userQuestionId = ?1 " +
-            "GROUP BY a.musicInfo.musicColor " +
-            "ORDER BY COUNT(a.musicInfo.musicColor) DESC " +
+    @Query("SELECT sub.color, MAX(timestamp) " +
+            "FROM (SELECT a.musicInfo.musicColor AS color, MAX(a.timeStamp) AS timestamp " +
+                    "FROM AnswerEntity a " +
+                    "WHERE a.userQuestion.userQuestionId = ?1 " +
+                    "GROUP BY a.musicInfo.musicColor) AS sub " +
+            "GROUP BY sub.color " +
+            "ORDER BY COUNT(sub.color) DESC, MAX(timestamp) DESC " +
             "LIMIT 1")
     ColorVal findBestColor(Long userQuestionId);  // 질문의 메인 컬러 찾기
 
