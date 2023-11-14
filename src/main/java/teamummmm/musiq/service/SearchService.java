@@ -5,12 +5,10 @@ import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.model_objects.specification.*;
 import teamummmm.musiq.dto.SearchAddSongDTO;
 import teamummmm.musiq.dto.SearchResultDTO;
-import teamummmm.musiq.model.AnswerEntity;
-import teamummmm.musiq.model.ColorVal;
-import teamummmm.musiq.model.MusicInfoEntity;
-import teamummmm.musiq.model.UserQuestionEntity;
+import teamummmm.musiq.model.*;
 import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.MusicInfoRepository;
+import teamummmm.musiq.repository.UserProfileRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
 import teamummmm.musiq.spotify.SpotifyService;
 
@@ -28,6 +26,7 @@ public class SearchService {
     private final AnswerRepository answerRepository;
     private final MusicInfoRepository musicInfoRepository;
     private final UserQuestionRepository userQuestionRepository;
+    private final UserProfileRepository userProfileRepository;
 
     public List<SearchResultDTO> searchService (final String searchText) {  // 곡 검색
         Paging<Track> trackPaging = spotifyService.searchTracks(searchText);
@@ -71,14 +70,25 @@ public class SearchService {
 
         answerRepository.save(answerEntity);  // 저장
 
-        if (answerRepository.isFirstAnswer(questionId, LocalDate.now(ZoneId.of("Asia/Seoul")))) {  // 오늘 처음으로 질문에 답변을 추가한 경우
+        if (answerRepository.isFirstAnswerToday(questionId, LocalDate.now(ZoneId.of("Asia/Seoul")))) {  // 오늘 처음으로 질문에 답변을 추가한 경우
             Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
             UserQuestionEntity updateEntity = optionalUpdateEntity.get();
 
-            updateEntity.updateAnswerCount(updateEntity.getAnswerCount() + 1);  // 카운트 1 증가
+            updateEntity.updateAnswerCount(updateEntity.getAnswerCount() + 1);  // answer 카운트 1 증가
 
             userQuestionRepository.save(updateEntity);  // 저장
         }
+
+        if (answerRepository.isFirstAnswer(questionId)) {  // 질문에 처음으로 질문에 답변을 추가한 경우
+            Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
+            UserQuestionEntity updateEntity = optionalUpdateEntity.get();
+
+            updateEntity.updateRankingCount(0);  // 랭킹 카운트 초기화
+
+            userQuestionRepository.save(updateEntity);  // 저장
+        }
+
+        updateAvgFeature(questionId);  // 사용자의 feature 업데이트
 
         ColorVal colorVal = answerRepository.findBestColor(questionId);  // 색상 업데이트
 
@@ -118,5 +128,29 @@ public class SearchService {
         musicInfoRepository.save(newMusicInfo);  // 저장
 
         return newMusicInfo;
+    }
+
+    private void updateAvgFeature(final Long questionId) {  // 답변의 평균 Feature 계산
+        List<AnswerEntity> answers = answerRepository.findByUserQuestion_UserQuestionId(questionId);  // 유저의 답변 모두 찾기
+
+        Float sumDanceability = 0.0F;  // danceability의 합
+        Float sumEnergy = 0.0F;  // energy의 합
+        Float sumValence = 0.0F;  // valence의 합
+
+        for (AnswerEntity answer : answers) {  // 각 변수의 합 구하기
+            AudioFeatures audioFeatures = spotifyService.getAudioFeatures(answer.getMusicInfo().getMusicId());  // AudioFeatures 가져오기
+
+            sumDanceability += audioFeatures.getDanceability();
+            sumEnergy += audioFeatures.getEnergy();
+            sumValence += audioFeatures.getValence();
+        }
+
+        Integer listSize = answers.size();  // answer 개수
+
+        UserProfileEntity userProfileEntity = userQuestionRepository.findById(questionId).get().getUser();  // 기존 user 엔티티 찾기
+
+        userProfileEntity.updateAudioFeatures(sumValence/listSize, sumEnergy/listSize, sumDanceability/listSize);  // 값 업데이트
+
+        userProfileRepository.save(userProfileEntity);  // 저장
     }
 }
