@@ -2,7 +2,9 @@ package teamummmm.musiq.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @Builder  // 빌더로 오브젝트 생성
@@ -25,6 +27,9 @@ public class AnswerEntity {
 
     @ManyToOne
     private UserQuestionEntity userQuestion;  // 질문 아이디 - fk (UserQuestion)
+
+    @CreationTimestamp
+    private Timestamp timeStamp;  // 가장 최근에 추가된 색상을 알기 위한 타임스탬프
 
     public void updateCaption(String caption) {
         this.caption = caption;
