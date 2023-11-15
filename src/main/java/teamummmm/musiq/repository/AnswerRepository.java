@@ -11,13 +11,14 @@ import java.util.List;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
-    @Query("SELECT sub.color, MAX(timestamp) " +
-            "FROM (SELECT a.musicInfo.musicColor AS color, MAX(a.timeStamp) AS timestamp " +
+    @Query("SELECT sub.color " +
+            "FROM (SELECT a.musicInfo.musicColor AS color, " +
+                    "MAX(a.timeStamp) AS max_timestamp, " +
+                    "COUNT(a.musicInfo.musicColor) AS color_count " +
                     "FROM AnswerEntity a " +
                     "WHERE a.userQuestion.userQuestionId = ?1 " +
                     "GROUP BY a.musicInfo.musicColor) AS sub " +
-            "GROUP BY sub.color " +
-            "ORDER BY COUNT(sub.color) DESC, MAX(timestamp) DESC " +
+            "ORDER BY sub.color_count DESC, sub.max_timestamp DESC " +
             "LIMIT 1")
     ColorVal findBestColor(Long userQuestionId);  // 질문의 메인 컬러 찾기
 
@@ -46,4 +47,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     List<AnswerEntity> findByAnswerDateAndUserQuestion_User_UserId(LocalDate answerDate, Long userId);  // AnswerDate와 UserId로 AnswerEntity 찾기
 
     Boolean existsByUserQuestion_User_UserId(Long userId);  // 대답을 한 적이 있는지 확인
+
+    Long countByUserQuestion_User_UserId(Long userId);  // 그 유저의 모든 답변의 개수 f
 }
