@@ -88,7 +88,7 @@ public class SearchService {
             userQuestionRepository.save(updateEntity);  // 저장
         }
 
-        updateAvgFeature(questionId);  // 사용자의 feature 업데이트
+        updateAvgFeature(answerEntity);  // 사용자의 feature 업데이트
 
         ColorVal colorVal = answerRepository.findBestColor(questionId);  // 색상 업데이트
 
@@ -130,26 +130,22 @@ public class SearchService {
         return newMusicInfo;
     }
 
-    private void updateAvgFeature(final Long questionId) {  // 답변의 평균 Feature 계산
-        List<AnswerEntity> answers = answerRepository.findByUserQuestion_UserQuestionId(questionId);  // 유저의 답변 모두 찾기
+    private void updateAvgFeature(final AnswerEntity answer) {  // 답변의 평균 Feature 계산
+        Long listSize = answerRepository.countByUserQuestion_User_UserId(answer.getUserQuestion().getUser().getUserId());  // 유저의 답변 모두 찾기
 
-        Float sumDanceability = 0.0F;  // danceability의 합
-        Float sumEnergy = 0.0F;  // energy의 합
-        Float sumValence = 0.0F;  // valence의 합
+        UserProfileEntity userProfileEntity = answer.getUserQuestion().getUser();
 
-        for (AnswerEntity answer : answers) {  // 각 변수의 합 구하기
-            AudioFeatures audioFeatures = spotifyService.getAudioFeatures(answer.getMusicInfo().getMusicId());  // AudioFeatures 가져오기
+        Float userDanceability = userProfileEntity.getDanceability();  // danceability의 합
+        Float userEnergy = userProfileEntity.getEnergy();  // energy의 합
+        Float userValence = userProfileEntity.getValence();  // valence의 합
 
-            sumDanceability += audioFeatures.getDanceability();
-            sumEnergy += audioFeatures.getEnergy();
-            sumValence += audioFeatures.getValence();
-        }
+        AudioFeatures audioFeatures = spotifyService.getAudioFeatures(answer.getMusicInfo().getMusicId());
 
-        Integer listSize = answers.size();  // answer 개수
+        userDanceability = (userDanceability * listSize + audioFeatures.getDanceability()) / (listSize + 1);
+        userEnergy = (userEnergy * listSize + audioFeatures.getEnergy()) / (listSize + 1);
+        userValence = (userValence * listSize + audioFeatures.getValence()) / (listSize + 1);
 
-        UserProfileEntity userProfileEntity = userQuestionRepository.findById(questionId).get().getUser();  // 기존 user 엔티티 찾기
-
-        userProfileEntity.updateAudioFeatures(sumValence/listSize, sumEnergy/listSize, sumDanceability/listSize);  // 값 업데이트
+        userProfileEntity.updateAudioFeatures(userValence, userEnergy, userDanceability);  // 값 업데이트
 
         userProfileRepository.save(userProfileEntity);  // 저장
     }
