@@ -26,10 +26,10 @@ public class UserQuestionEntity {
     @ColumnDefault("0")
     private Integer answerCount;  // 답변 횟수 (답변 개수가 아니라 특정 질문에 대해서 몇번 답변했는지)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserProfileEntity user;  // 유저 아이디 - fk (User)
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CommonQuestionEntity commonQuestion;  // 공통 질문 아이디 - fk (CommonQuestion)
 
     @OneToMany(mappedBy = "userQuestion")

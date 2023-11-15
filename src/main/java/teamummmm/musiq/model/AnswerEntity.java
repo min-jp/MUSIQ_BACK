@@ -18,14 +18,14 @@ public class AnswerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;  // 오브젝트 아이디
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MusicInfoEntity musicInfo;  // 음악 아이디 - fk (MusicInfo)
 
     private LocalDate answerDate;  // 대답 날짜
 
     private String caption;  // 캡션
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserQuestionEntity userQuestion;  // 질문 아이디 - fk (UserQuestion)
 
     @CreationTimestamp
