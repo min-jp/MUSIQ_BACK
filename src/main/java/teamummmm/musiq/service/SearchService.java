@@ -141,9 +141,9 @@ public class SearchService {
 
         AudioFeatures audioFeatures = spotifyService.getAudioFeatures(answer.getMusicInfo().getMusicId());
 
-        userDanceability = (userDanceability * listSize + audioFeatures.getDanceability()) / (listSize + 1);
-        userEnergy = (userEnergy * listSize + audioFeatures.getEnergy()) / (listSize + 1);
-        userValence = (userValence * listSize + audioFeatures.getValence()) / (listSize + 1);
+        userDanceability = (userDanceability * (listSize - 1) + audioFeatures.getDanceability()) / listSize;
+        userEnergy = (userEnergy * (listSize - 1) + audioFeatures.getEnergy()) / listSize;
+        userValence = (userValence * (listSize - 1) + audioFeatures.getValence()) / listSize;
 
         userProfileEntity.updateAudioFeatures(userValence, userEnergy, userDanceability);  // 값 업데이트
 
