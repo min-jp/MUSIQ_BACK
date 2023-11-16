@@ -17,6 +17,8 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final UserProfileRepository userProfileRepository;
 
+    private int recentCall = 0;  // 임시 랜덤 함수
+
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh) {
         UserQuestionEntity entity;  // 엔티티 선언
 
@@ -56,9 +58,11 @@ public class QuestionService {
         //  리프레시에 따른 로직 구현
 
         // 엔티티 중 선택
-        Random random = new Random();
-        int randomNum = random.nextInt(entities.size());
-        UserQuestionEntity entity = entities.get(randomNum);  // 랜덤 선택
+        recentCall += 1;
+        if (recentCall >= entities.size()) {
+            recentCall = 0;
+        }
+        UserQuestionEntity entity = entities.get(recentCall);  // 랜덤 선택
 
         // 리턴
         return RequestQuestionDTO.builder()
