@@ -34,8 +34,12 @@ public class CalendarService {
                 .collect(Collectors.groupingBy(AnswerEntity::getAnswerDate));  // 날짜별로 그룹핑 후 Map 객체 생성
 
         // 연속 일 수 찾기
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul")).minusDays(1); // 어제 날짜로 설정
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Seoul")); // 어제 날짜로 설정
         Long consecutiveDates = 0L;  // 연속 날짜
+        if (groupByDate.containsKey(currentDate)) {  // 오늘 대답을 했으면 추가
+            consecutiveDates++;
+        }
+        currentDate = currentDate.minusDays(1); // 이전 날짜로 이동
 
         while (groupByDate.containsKey(currentDate)) {  // 연속된 날짜 탐색
             consecutiveDates++;
