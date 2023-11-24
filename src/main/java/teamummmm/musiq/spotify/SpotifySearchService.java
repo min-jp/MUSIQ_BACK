@@ -17,7 +17,7 @@ import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class SpotifyService {
+public class SpotifySearchService {
     private final SpotifyToken spotifyToken;
 
     public Paging<Track> searchTracks(String q) {  // Track 리스트 검색

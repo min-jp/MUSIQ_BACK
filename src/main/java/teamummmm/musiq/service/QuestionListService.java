@@ -10,7 +10,7 @@ import teamummmm.musiq.dto.QuestionListDTO;
 import teamummmm.musiq.model.*;
 import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
-import teamummmm.musiq.spotify.SpotifyService;
+import teamummmm.musiq.spotify.SpotifySearchService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class QuestionListService {
     private final UserQuestionRepository userQuestionRepository;
     private final AnswerRepository answerRepository;
-    private final SpotifyService spotifyService;
+    private final SpotifySearchService spotifySearchService;
 
     public List<QuestionListDTO> questionListService(final Long userId) {
         List<UserQuestionEntity> entities =  userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
@@ -72,7 +72,7 @@ public class QuestionListService {
                             .map(answer -> {
                                 MusicInfoEntity musicInfo = answer.getMusicInfo();  // MusicInfoEntity
 
-                                Track track = spotifyService.getTrack(musicInfo.getMusicId()); // 트랙 가져오기
+                                Track track = spotifySearchService.getTrack(musicInfo.getMusicId()); // 트랙 가져오기
 
                                 ArtistSimplified artist = track.getArtists()[0];  // 아티스트
                                 Image image = track.getAlbum().getImages()[0];  // 커버 이미지

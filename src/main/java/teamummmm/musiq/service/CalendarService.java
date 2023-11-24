@@ -11,7 +11,7 @@ import teamummmm.musiq.model.AnswerEntity;
 import teamummmm.musiq.model.ColorVal;
 import teamummmm.musiq.model.MusicInfoEntity;
 import teamummmm.musiq.repository.AnswerRepository;
-import teamummmm.musiq.spotify.SpotifyService;
+import teamummmm.musiq.spotify.SpotifySearchService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor  // 생성자 주입
 public class CalendarService {
     private final AnswerRepository repository;
-    private final SpotifyService spotifyService;
+    private final SpotifySearchService spotifySearchService;
 
     public CalendarDataDTO calendarDataService(final Long userId) {
         List<AnswerEntity> entities = repository.findByUserQuestion_User_UserId(userId);  // List<AnswerEntity> 찾기
@@ -84,7 +84,7 @@ public class CalendarService {
                             .forEach(answer -> {
                                 MusicInfoEntity musicInfo = answer.getMusicInfo();  // MusicInfoEntity
 
-                                Track track = spotifyService.getTrack(musicInfo.getMusicId());  // 트랙 가져오기
+                                Track track = spotifySearchService.getTrack(musicInfo.getMusicId());  // 트랙 가져오기
 
                                 ArtistSimplified artist = track.getArtists()[0];  // 아티스트
                                 Image image = track.getAlbum().getImages()[0];  // 커버 이미지

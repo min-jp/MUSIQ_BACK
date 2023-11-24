@@ -10,7 +10,7 @@ import teamummmm.musiq.dto.CaptionDTO;
 import teamummmm.musiq.dto.PlaySongInfoDTO;
 import teamummmm.musiq.model.AnswerEntity;
 import teamummmm.musiq.repository.AnswerRepository;
-import teamummmm.musiq.spotify.SpotifyService;
+import teamummmm.musiq.spotify.SpotifySearchService;
 
 import java.util.Optional;
 
@@ -18,13 +18,13 @@ import java.util.Optional;
 @RequiredArgsConstructor  // 생성자 주입
 public class PlaySongService {
     private final AnswerRepository repository;
-    private final SpotifyService spotifyService;
+    private final SpotifySearchService spotifySearchService;
 
     public PlaySongInfoDTO playSongService(final Long answerId) {
         Optional<AnswerEntity> entity = repository.findById(answerId);  // 아이디로 entity 찾기
         AnswerEntity answer = entity.get();
 
-        Track track = spotifyService.getTrack(answer.getMusicInfo().getMusicId());  // track 정보 검색
+        Track track = spotifySearchService.getTrack(answer.getMusicInfo().getMusicId());  // track 정보 검색
 
         ArtistSimplified artist = track.getArtists()[0];  // 아티스트
         Image image = track.getAlbum().getImages()[0];  // 커버 이미지

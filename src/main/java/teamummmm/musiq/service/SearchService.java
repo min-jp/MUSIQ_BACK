@@ -10,7 +10,7 @@ import teamummmm.musiq.repository.AnswerRepository;
 import teamummmm.musiq.repository.MusicInfoRepository;
 import teamummmm.musiq.repository.UserProfileRepository;
 import teamummmm.musiq.repository.UserQuestionRepository;
-import teamummmm.musiq.spotify.SpotifyService;
+import teamummmm.musiq.spotify.SpotifySearchService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor  // 생성자 주입
 public class SearchService {
-    private final SpotifyService spotifyService;
+    private final SpotifySearchService spotifySearchService;
     private final AnswerRepository answerRepository;
     private final MusicInfoRepository musicInfoRepository;
     private final UserQuestionRepository userQuestionRepository;
     private final UserProfileRepository userProfileRepository;
 
     public List<SearchResultDTO> searchService (final String searchText) {  // 곡 검색
-        Paging<Track> trackPaging = spotifyService.searchTracks(searchText);
+        Paging<Track> trackPaging = spotifySearchService.searchTracks(searchText);
 
         validateTrack(trackPaging);  // 검색 결과가 비었는지 검사
 
@@ -96,7 +96,7 @@ public class SearchService {
     }
 
     private MusicInfoEntity setMusicInfo(final String musicId) {  // 음악 정보가 기존에 없는 경우
-        AudioFeatures audioFeatures = spotifyService.getAudioFeatures(musicId);  // 음악 정보
+        AudioFeatures audioFeatures = spotifySearchService.getAudioFeatures(musicId);  // 음악 정보
 
         ColorVal colorVal;  // 색 정보
 
@@ -139,7 +139,7 @@ public class SearchService {
         Float userEnergy = userProfileEntity.getEnergy();  // energy의 합
         Float userValence = userProfileEntity.getValence();  // valence의 합
 
-        AudioFeatures audioFeatures = spotifyService.getAudioFeatures(answer.getMusicInfo().getMusicId());
+        AudioFeatures audioFeatures = spotifySearchService.getAudioFeatures(answer.getMusicInfo().getMusicId());
 
         userDanceability = (userDanceability * (listSize - 1) + audioFeatures.getDanceability()) / listSize;
         userEnergy = (userEnergy * (listSize - 1) + audioFeatures.getEnergy()) / listSize;
