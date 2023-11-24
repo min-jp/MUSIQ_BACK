@@ -11,7 +11,7 @@ import teamummmm.musiq.service.TempAuthService;
 //  auth 구현
 @RestController
 @RequiredArgsConstructor  // 생성자 주입
-@RequestMapping("auth")
+@RequestMapping("temp-auth")
 public class TempAuthController {
     private final TempAuthService service;
 
