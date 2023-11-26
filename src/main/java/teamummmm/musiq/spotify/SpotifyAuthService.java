@@ -24,14 +24,10 @@ public class SpotifyAuthService {
     private String clientId;
     @Value("${spotify.client.secret}")
     private String clientSecret;
-    /*
-    @Value("${spotify.client.redirect-uri}")
-    private String redirectUriString;
-    */
-    private final String redirectUriString="http://localhost:8080/auth/callback";  // 로컬환경 테스트
-    private final URI redirectUri = SpotifyHttpManager.makeUri(redirectUriString);  // 리다이렉트 URI
 
-    public String spotifyAuthCodeUri() {  // 로그인 uri
+    public String spotifyAuthCodeUri(final String redirectUriString) {  // 로그인 uri
+        final URI redirectUri = SpotifyHttpManager.makeUri(redirectUriString);  // 리다이렉트 URI
+
         final SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)
@@ -49,7 +45,9 @@ public class SpotifyAuthService {
         return uri.toString();  // URI 리턴
     }
 
-    public SpotifyApi spotifyAuthCode(final String code) {  // token 발행
+    public SpotifyApi spotifyAuthCode(final String code, final String redirectUriString) {  // token 발행
+        final URI redirectUri = SpotifyHttpManager.makeUri(redirectUriString);  // 리다이렉트 URI
+
         final SpotifyApi spotifyApi = new SpotifyApi.Builder()
                 .setClientId(clientId)
                 .setClientSecret(clientSecret)

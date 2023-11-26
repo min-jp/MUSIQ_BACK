@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.michaelthelin.spotify.SpotifyApi;
 import se.michaelthelin.spotify.model_objects.specification.User;
+import teamummmm.musiq.dto.CodeDTO;
 import teamummmm.musiq.dto.CodeLoginDTO;
 import teamummmm.musiq.dto.SpotifyLoginDTO;
 import teamummmm.musiq.model.CommonQuestionEntity;
@@ -24,14 +25,14 @@ public class AuthService {
     private final UserQuestionRepository userQuestionRepository;
     private final CommonQuestionRepository commonQuestionRepository;
 
-    public SpotifyLoginDTO spotifyLoginService() {  // 스포티파이 로그인
+    public SpotifyLoginDTO spotifyLoginService(final String redirectUri) {  // 스포티파이 로그인
         return SpotifyLoginDTO.builder()
-                .uri(spotifyAuthService.spotifyAuthCodeUri())  // spotifyAuthCodeUri 이용해 로그인 URI 가져옴
+                .uri(spotifyAuthService.spotifyAuthCodeUri(redirectUri))  // spotifyAuthCodeUri 이용해 로그인 URI 가져옴
                 .build();  // SpotifyLoginDTO 생성 후 리턴
     }
 
-    public CodeLoginDTO codeLoginService(final String code) {  // code를 이용해 로그인 (회원가입)
-        SpotifyApi spotifyApi = spotifyAuthService.spotifyAuthCode(code);  // token 정보
+    public CodeLoginDTO codeLoginService(final String code, final String redirectUri) {  // code를 이용해 로그인 (회원가입)
+        SpotifyApi spotifyApi = spotifyAuthService.spotifyAuthCode(code, redirectUri);  // token 정보
         User user = spotifyAuthService.getSpotifyUser(spotifyApi);  // 스포티파이 유저 정보
         Long userId;  // 유저 아이디
 
@@ -65,5 +66,11 @@ public class AuthService {
                 .token(spotifyApi.getAccessToken())
                 .user_id(userId)
                 .build();  // CodeLoginDTO 생성 후 리턴
+    }
+
+    public CodeDTO callbackService(final String code) {  // 코드 받아서 다시 리턴
+        return CodeDTO.builder()
+                .code(code)
+                .build();  // CodeDTO 생성 후 리턴
     }
 }
