@@ -19,23 +19,35 @@ public class QuestionService {
 
     private int recentCall = 0;  // 임시 랜덤 함수
 
-    public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh) {
+    public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long prevQuesitonId) {
         UserQuestionEntity entity;  // 엔티티 선언
 
         if (!answerRepository.existsByUserQuestion_User_UserId(userId)) {  // 처음 호출하는 경우
             entity = userQuestionRepository.defaultQuestionList(userId).get(0);  // 디폴트 질문 호출
         }
         else {  // 답한 질문이 있는 경우
-            if (refresh) {  // 새로고침한 경우
-                entity = findBestMainQuestion(userId);  // 기존 best 메인 질문
-                entity.updateRankingCount(entity.getRankingCount() + 1);  // 랭킹 카운트 증가
-                userQuestionRepository.save(entity); // 저장 후 다시 best 메인 질문 탐색
+            UserQuestionEntity prevQuestionEntity = userQuestionRepository.findById(prevQuesitonId).get();  // 이전 질문 탐색
+
+            if (prevQuestionEntity.getAnswerPageAnsList().isEmpty()) {  // 대답을 하지 않은 경우
+                if (refresh) {  // 새로고침한 경우
+                    prevQuestionEntity.updateRankingCount(prevQuestionEntity.getRankingCount() + 1);  // 랭킹 카운트 증가
+                    userQuestionRepository.save(prevQuestionEntity); // 저장
+                    entity = findBestMainQuestion(userId);  // 사용자 값과 가장 가까운 메인 질문 재탐색
+                }
+                else {  // 새로고침을 하지 않은 경우
+                    entity = prevQuestionEntity;  // 기존 질문
+                }
             }
+            else {  // 대답을 한 경우
+                CommonQuestionEntity commonQuestionEntity = prevQuestionEntity.getCommonQuestion().getFollowupQuestion();  // 후속 질문 엔티티
 
-            entity = findBestMainQuestion(userId);  // 사용자 값과 가장 가까운 메인 질문 찾기
-
-            // TODO
-            //  후속질문 출력하도록 로직 수정
+                if (commonQuestionEntity != null) {  // 후속 질문이 있는 경우
+                    entity = userQuestionRepository.findByCommonQuestionAndUser_UserId(commonQuestionEntity, userId);  // 후속 질문을 가진 엔티티 탐색
+                }
+                else {  // 후속 질문이 없는 경우
+                    entity = findBestMainQuestion(userId);  // 사용자 값과 가장 가까운 메인 질문 찾기
+                }
+            }
         }
 
         return RequestQuestionDTO.builder()
@@ -46,7 +58,7 @@ public class QuestionService {
                 .build();  // RequestQuestionDTO 리턴
     }
 
-    public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh) {
+    public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh, final Long prevQuesitonId) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
         List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
 
@@ -57,6 +69,9 @@ public class QuestionService {
         // TODO
         //  리프레시에 따른 로직 구현
 
+        // FIXME
+        //  recentCall 구조는 여러명의 사용자 구조에서 잘못됨
+        //  한번에 두 질문을 받던가 혹은 prevQuesitonId 활용
         // 엔티티 중 선택
         recentCall += 1;
         if (recentCall >= entities.size()) {
