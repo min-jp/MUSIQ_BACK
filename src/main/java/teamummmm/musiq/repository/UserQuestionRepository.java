@@ -3,6 +3,7 @@ package teamummmm.musiq.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import teamummmm.musiq.model.CommonQuestionEntity;
 import teamummmm.musiq.model.UserQuestionEntity;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity
             "AND u.answerPageAnsList IS EMPTY " +
             "AND u.commonQuestion.category = 0")
     List<UserQuestionEntity> defaultQuestionList(Long userId);  // 디폴트 질문
+
+    UserQuestionEntity findByCommonQuestionAndUser_UserId(CommonQuestionEntity entity, Long userId);  // 유저의 후속 질문
 }
