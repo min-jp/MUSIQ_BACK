@@ -19,10 +19,11 @@ public class QuestionController {
     @GetMapping("/main")
     public ResponseEntity<?> mainQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
-            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh
+            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
+            @RequestParam(value = "prev_quesiton_id", required = false) Long prevQuesitonId
     ) {
         try {
-            RequestQuestionDTO dto = service.mainQuestionService(userId, refresh);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.mainQuestionService(userId, refresh, prevQuesitonId);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
@@ -39,10 +40,11 @@ public class QuestionController {
     @GetMapping("/answered")
     public ResponseEntity<?> answeredQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
-            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh
+            @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
+            @RequestParam(value = "prev_quesiton_id", required = false) Long prevQuesitonId
     ) {
         try {
-            RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh, prevQuesitonId);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
