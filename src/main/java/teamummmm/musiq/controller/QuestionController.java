@@ -20,7 +20,7 @@ public class QuestionController {
     public ResponseEntity<?> mainQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
             @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
-            @RequestParam(value = "this_question_id", required = false) Long thisQuestionId
+            @RequestParam(value = "this_question_id") Long thisQuestionId
     ) {
         try {
             RequestQuestionDTO dto = service.mainQuestionService(userId, refresh, thisQuestionId);  // RequestQuestionDTO 생성
@@ -41,8 +41,8 @@ public class QuestionController {
     public ResponseEntity<?> answeredQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
             @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
-            @RequestParam(value = "this_question_id", required = false) Long thisQuestionId,
-            @RequestParam(value = "other_question_id", required = false) Long otherQuestionId
+            @RequestParam(value = "this_question_id") Long thisQuestionId,
+            @RequestParam(value = "other_question_id") Long otherQuestionId
     ) {
         try {
             RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh, thisQuestionId, otherQuestionId);  // RequestQuestionDTO 생성
