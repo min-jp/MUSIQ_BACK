@@ -36,7 +36,7 @@ public class SpotifyAuthService {
 
         final AuthorizationCodeUriRequest authorizationCodeUriRequest = spotifyApi.authorizationCodeUri()
 //              .state("x4xkmn9pu3j6ukrs8n")
-//              .scope("user-read-birthdate,user-read-email")
+                .scope("app-remote-control,user-modify-playback-state,playlist-read-private,playlist-modify-public,user-read-currently-playing")
 //              .show_dialog(true)
                 .build();  // AuthorizationCodeUriRequest 객체 생성
 
