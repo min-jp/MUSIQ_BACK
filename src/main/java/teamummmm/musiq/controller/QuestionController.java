@@ -20,10 +20,10 @@ public class QuestionController {
     public ResponseEntity<?> mainQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
             @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
-            @RequestParam(value = "prev_quesiton_id", required = false) Long prevQuesitonId
+            @RequestParam(value = "this_question_id", required = false) Long thisQuestionId
     ) {
         try {
-            RequestQuestionDTO dto = service.mainQuestionService(userId, refresh, prevQuesitonId);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.mainQuestionService(userId, refresh, thisQuestionId);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
@@ -41,10 +41,11 @@ public class QuestionController {
     public ResponseEntity<?> answeredQuestionRequest(
             @RequestParam(value = "user_id") Long userId,
             @RequestParam(value = "refresh", defaultValue = "false") boolean refresh,
-            @RequestParam(value = "prev_quesiton_id", required = false) Long prevQuesitonId
+            @RequestParam(value = "this_question_id", required = false) Long thisQuestionId,
+            @RequestParam(value = "other_question_id", required = false) Long otherQuestionId
     ) {
         try {
-            RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh, prevQuesitonId);  // RequestQuestionDTO 생성
+            RequestQuestionDTO dto = service.answeredQuestionService(userId, refresh, thisQuestionId, otherQuestionId);  // RequestQuestionDTO 생성
 
             return ResponseEntity.ok().body(dto);  // RequestQuestionDTO 리턴
         } catch (Exception e) {
