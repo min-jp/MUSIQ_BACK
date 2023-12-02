@@ -17,16 +17,14 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final UserProfileRepository userProfileRepository;
 
-    private int recentCall = 0;  // 임시 랜덤 함수
-
-    public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long prevQuesitonId) {
+    public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId) {
         UserQuestionEntity entity;  // 엔티티 선언
 
         if (!answerRepository.existsByUserQuestion_User_UserId(userId)) {  // 처음 호출하는 경우
             entity = userQuestionRepository.defaultQuestionList(userId).get(0);  // 디폴트 질문 호출
         }
         else {  // 답한 질문이 있는 경우
-            UserQuestionEntity prevQuestionEntity = userQuestionRepository.findById(prevQuesitonId).get();  // 이전 질문 탐색
+            UserQuestionEntity prevQuestionEntity = userQuestionRepository.findById(thisQuestionId).get();  // 이전 질문 탐색
 
             if (prevQuestionEntity.getAnswerPageAnsList().isEmpty()) {  // 대답을 하지 않은 경우
                 if (refresh) {  // 새로고침한 경우
@@ -58,7 +56,7 @@ public class QuestionService {
                 .build();  // RequestQuestionDTO 리턴
     }
 
-    public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh, final Long prevQuesitonId) {
+    public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId, final Long otherQuestionId) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
         List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
 
@@ -66,18 +64,31 @@ public class QuestionService {
             return RequestQuestionDTO.builder().build();  // 빈 DTO 리턴
         }
 
-        // TODO
-        //  리프레시에 따른 로직 구현
+        UserQuestionEntity entity;  // 엔티티
+        if (refresh) {  // 리프레시를 하는 경우
+            Long new_id;  // 다음 질문 아이디
+            Long temp_id;  // 임시 아이디
+            if (otherQuestionId == null) {
+                new_id = thisQuestionId;
+                temp_id = thisQuestionId;
+            }
+            else {
+                new_id = Long.max(thisQuestionId, otherQuestionId);  // 두 아이디 중 큰 값을 고름
+                temp_id = Long.min(thisQuestionId, otherQuestionId);  // 두 아이디 중 작은 값을 고름
+            }
 
-        // FIXME
-        //  recentCall 구조는 여러명의 사용자 구조에서 잘못됨
-        //  한번에 두 질문을 받던가 혹은 prevQuesitonId 활용
-        // 엔티티 중 선택
-        recentCall += 1;
-        if (recentCall >= entities.size()) {
-            recentCall = 0;
+            new_id %= entities.size();  // 나머지를 통해 값 구함
+            temp_id %= entities.size();
+
+            if (temp_id.equals(new_id + 1)) {  // 한바퀴 돈 경우
+                new_id += 1;
+            }
+            entity = entities.get(new_id.intValue());
         }
-        UserQuestionEntity entity = entities.get(recentCall);  // 랜덤 선택
+        else {  // 리프레시를 하지 않는 경우
+            entity = userQuestionRepository.findById(thisQuestionId).get();  // 기존 질문 반환
+        }
+
 
         // 리턴
         return RequestQuestionDTO.builder()
