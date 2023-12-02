@@ -17,11 +17,16 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final UserProfileRepository userProfileRepository;
 
+    private final Long FIRST_CALL = -1L;
+
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId) {
         UserQuestionEntity entity;  // 엔티티 선언
 
         if (!answerRepository.existsByUserQuestion_User_UserId(userId)) {  // 처음 호출하는 경우
             entity = userQuestionRepository.defaultQuestionList(userId).get(0);  // 디폴트 질문 호출
+        }
+        else if (thisQuestionId.equals(FIRST_CALL)) {  // 앱을 다시 실행시키는 경우
+            entity = findBestMainQuestion(userId);  // 사용자 값과 가장 가까운 메인 질문 찾기
         }
         else {  // 답한 질문이 있는 경우
             UserQuestionEntity prevQuestionEntity = userQuestionRepository.findById(thisQuestionId).get();  // 이전 질문 탐색
@@ -48,6 +53,10 @@ public class QuestionService {
             }
         }
 
+        if (entity == null) {  // 대답을 안한 질문이 없는 경우
+            return RequestQuestionDTO.builder().build();  // 빈 RequestQuestionDTO 리턴
+        }
+
         return RequestQuestionDTO.builder()
                 .question_id(entity.getUserQuestionId())  // 오브젝트 아이디 (userQuestionId)
                 .question_message(entity.getCommonQuestion().getQuestionMsg())  // 질문 내용 (questionMsg)
@@ -58,37 +67,72 @@ public class QuestionService {
 
     public RequestQuestionDTO answeredQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId, final Long otherQuestionId) {
         // 유저 아이디 받아서 질문 리턴 (유저질문)
-        List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
+        final List<UserQuestionEntity> entities = userQuestionRepository.findByUser_UserIdAndAnswerPageAnsListIsNotEmpty(userId);
 
         if (entities.isEmpty()) {  // 대답한 질문이 없는 경우
             return RequestQuestionDTO.builder().build();  // 빈 DTO 리턴
         }
 
         UserQuestionEntity entity;  // 엔티티
-        if (refresh) {  // 리프레시를 하는 경우
-            Long new_id;  // 다음 질문 아이디
-            Long temp_id;  // 임시 아이디
-            if (otherQuestionId == null) {
-                new_id = thisQuestionId;
-                temp_id = thisQuestionId;
-            }
-            else {
-                new_id = Long.max(thisQuestionId, otherQuestionId);  // 두 아이디 중 큰 값을 고름
-                temp_id = Long.min(thisQuestionId, otherQuestionId);  // 두 아이디 중 작은 값을 고름
-            }
 
-            new_id %= entities.size();  // 나머지를 통해 값 구함
-            temp_id %= entities.size();
+        // FIXME
+        //  코드 수정.. 너무 잘못짰어...
 
-            if (temp_id.equals(new_id + 1)) {  // 한바퀴 돈 경우
-                new_id += 1;
+        if (thisQuestionId.equals(FIRST_CALL)) {  // 앱을 다시 실행시키는 경우
+            if (entities.size() == 1) {  // 한개인 경우
+                entity = entities.get(0);
             }
-            entity = entities.get(new_id.intValue());
+            else if(otherQuestionId.equals(FIRST_CALL)) {  // 윗 질문 호출
+                Random rand = new Random();
+                entity = entities.get(rand.nextInt(entities.size()));  // 랜덤 호출
+            }
+            else {  // 아래 질문 호출
+                entity = getUniqueEntity(otherQuestionId, entities);
+            }
         }
-        else {  // 리프레시를 하지 않는 경우
-            entity = userQuestionRepository.findById(thisQuestionId).get();  // 기존 질문 반환
-        }
+        else {
+            if (refresh) {  // 리프레시를 하는 경우
+                List<UserQuestionEntity> temp_entities = new ArrayList<>(entities);  // 엔티티 복사
+                for (UserQuestionEntity e : temp_entities) {  // otherQuestionId 찾아서 삭제
+                    if (e.getUserQuestionId().equals(otherQuestionId)) {
+                        temp_entities.remove(e);
+                        break;
+                    }
+                }
+                for (UserQuestionEntity e : temp_entities) {  // thisQuestionId 찾아서 삭제
+                    if (e.getUserQuestionId().equals(thisQuestionId)) {
+                        temp_entities.remove(e);
+                        break;
+                    }
+                }
 
+                if (temp_entities.isEmpty()){  // 총 2개였던 경우
+                    entity = null;
+                    for (UserQuestionEntity e : entities) {
+                        if (e.getUserQuestionId().equals(thisQuestionId)) {  // 기존 질문 리턴
+                            entity = e;
+                            break;
+                        }
+                    }
+                }
+                else {  // 3개 이상인 경우
+                    Random rand = new Random();
+                    entity = temp_entities.get(rand.nextInt(temp_entities.size()));  // 랜덤 호출
+                }
+            }
+            else {  // 리프레시를 하지 않는 경우
+                entity = null;
+                for (UserQuestionEntity e : entities) {
+                    if (e.getUserQuestionId().equals(thisQuestionId)) {  // 기존 질문 리턴
+                        entity = e;
+                        break;
+                    }
+                }
+                if (thisQuestionId.equals(otherQuestionId) && entities.size() == 2) {  // 새로운 질문이 추가됐을 때
+                    entity = getUniqueEntity(otherQuestionId, entities);
+                }
+            }
+        }
 
         // 리턴
         return RequestQuestionDTO.builder()
@@ -99,12 +143,27 @@ public class QuestionService {
                 .build();
     }
 
+    private UserQuestionEntity getUniqueEntity(Long otherQuestionId, List<UserQuestionEntity> entities) {  // 중복되지 않는 질문 찾기
+        UserQuestionEntity entity;
+        List<UserQuestionEntity> temp_entities = new ArrayList<>(entities);  // 엔티티 복사
+        for (UserQuestionEntity e : temp_entities) {
+            if (e.getUserQuestionId().equals(otherQuestionId)) {  // otherQuestionId 찾아서 삭제
+                temp_entities.remove(e);
+                break;
+            }
+        }
+
+        Random rand = new Random();
+        entity = temp_entities.get(rand.nextInt(temp_entities.size()));  // 랜덤 호출
+        return entity;
+    }
+
     // 사용자 값과 가장 가까운 메인 질문 찾기
     private UserQuestionEntity findBestMainQuestion(final Long userId) {
         List<UserQuestionEntity> entities = userQuestionRepository.mainQuestionList(userId);  // 대답 안한 UserQuestionEntity 찾기
 
         if (entities.isEmpty()) {  // 메인 질문이 없는 경우
-            return UserQuestionEntity.builder().build();  // 빈 DTO 리턴
+            return null;  // null 리턴
         }
 
         // 유저의 파라미터 찾기
