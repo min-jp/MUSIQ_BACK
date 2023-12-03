@@ -17,7 +17,9 @@ public class QuestionService {
     private final AnswerRepository answerRepository;
     private final UserProfileRepository userProfileRepository;
 
-    private final Long FIRST_CALL = -1L;
+    private final Long FIRST_CALL = -1L;  // 이전 질문이 없는 경우에 보내는 아이디
+    private final int adminWeight = 8;  // 기존 설정된 특징 가중치
+    private final int averageAnswerWeight = 2;  // 사용자들의 평균 특징 가중치
     private int flag = 1;
 
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId) {
@@ -180,6 +182,7 @@ public class QuestionService {
 
         // 유저의 파라미터 찾기
         UserProfileEntity userProfileEntity = userProfileRepository.findById(userId).get();  // user 엔티티 찾기
+
         final Float userDanceability = userProfileEntity.getDanceability();  // 유저의 danceability
         final Float userEnergy = userProfileEntity.getEnergy();  // 유저의 energy
         final Float userValence = userProfileEntity.getValence();  // 유저의 valence
@@ -188,12 +191,20 @@ public class QuestionService {
         return entities.stream().min(Comparator.comparingDouble(entity -> {  // 가장 작은 값 찾기
             CommonQuestionEntity commonQuestion = entity.getCommonQuestion();  // feature를 위한 CommonQuestionEntity
 
+            final Float questionDanceability = calculateFeature(commonQuestion.getDanceability(), commonQuestion.getAvgDanceability());  // 질문의 danceability
+            final Float questionEnergy = calculateFeature(commonQuestion.getEnergy(), commonQuestion.getAvgEnergy());  // 질문의 energy
+            final Float questionValence = calculateFeature(commonQuestion.getValence(), commonQuestion.getAvgValence());  // 질문의 valence
+
             return (Math.log10(entity.getRankingCount() + 1)/Math.log10(3) +  // 랭킹 카운트에 따라 log3(x+1)의 크기로 거리에 더함
                     Math.sqrt(  // 루트
-                            Math.pow(userDanceability - commonQuestion.getDanceability(), 2) +  // danceability 값의 차의 제곱
-                            Math.pow(userEnergy - commonQuestion.getEnergy(), 2) +  // energy 값의 차의 제곱
-                            Math.pow(userValence - commonQuestion.getValence(), 2)  // valence 값의 차의 제곱
+                            Math.pow(userDanceability - questionDanceability, 2) +  // danceability 값의 차의 제곱
+                            Math.pow(userEnergy - questionEnergy, 2) +  // energy 값의 차의 제곱
+                            Math.pow(userValence - questionValence, 2)  // valence 값의 차의 제곱
                     ));  // 유클리드 거리 계산
         })).orElse(null);  // 가장 가까운 UserQuestionEntity 찾은 뒤 리턴
+    }
+
+    private Float calculateFeature (final Float adminVal, final Float averageAnswerVal) {  // 설정된 특징, 사용자 특징 가중치
+        return (adminVal * adminWeight + averageAnswerVal * averageAnswerWeight) / (adminWeight + averageAnswerWeight);
     }
 }
