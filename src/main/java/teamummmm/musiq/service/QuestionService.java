@@ -18,6 +18,7 @@ public class QuestionService {
     private final UserProfileRepository userProfileRepository;
 
     private final Long FIRST_CALL = -1L;
+    private int flag = 1;
 
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId) {
         UserQuestionEntity entity;  // 엔티티 선언
@@ -79,15 +80,15 @@ public class QuestionService {
         //  코드 수정.. 너무 잘못짰어...
 
         if (thisQuestionId.equals(FIRST_CALL)) {  // 앱을 다시 실행시키는 경우
+            flag *= -1;
             if (entities.size() == 1) {  // 한개인 경우
                 entity = entities.get(0);
             }
-            else if(otherQuestionId.equals(FIRST_CALL)) {  // 윗 질문 호출
-                Random rand = new Random();
-                entity = entities.get(rand.nextInt(entities.size()));  // 랜덤 호출
+            else if(flag == 1) {  // 번갈아가며 호출
+                entity = entities.get(0);
             }
-            else {  // 아래 질문 호출
-                entity = getUniqueEntity(otherQuestionId, entities);
+            else {
+                entity = entities.get(1);
             }
         }
         else {
@@ -129,7 +130,18 @@ public class QuestionService {
                     }
                 }
                 if (thisQuestionId.equals(otherQuestionId) && entities.size() == 2) {  // 새로운 질문이 추가됐을 때
-                    entity = getUniqueEntity(otherQuestionId, entities);
+                    flag *= -1;
+                    if (flag == 1) {  // 번갈아가며 다른질문, 기존질문 리턴
+                        entity = getUniqueEntity(otherQuestionId, entities);
+                    }
+                    else {
+                        for (UserQuestionEntity e : entities) {
+                            if (e.getUserQuestionId().equals(thisQuestionId)) {  // 기존 질문 리턴
+                                entity = e;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
