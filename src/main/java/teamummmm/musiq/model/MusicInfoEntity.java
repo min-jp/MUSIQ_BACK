@@ -16,4 +16,10 @@ public class MusicInfoEntity {
     private String musicId;  // 음악 아이디
 
     private ColorVal musicColor;  // 음악별 색깔
+
+    private Float valence;  // 음악 valence
+
+    private Float energy;  // 음악 energy
+
+    private Float danceability;  // 음악 danceability
 }
