@@ -48,5 +48,7 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
 
     Boolean existsByUserQuestion_User_UserId(Long userId);  // 대답을 한 적이 있는지 확인
 
-    Long countByUserQuestion_User_UserId(Long userId);  // 그 유저의 모든 답변의 개수 f
+    Long countByUserQuestion_User_UserId(Long userId);  // 그 유저의 모든 답변 개수
+
+    Long countByUserQuestion_CommonQuestion_CommonQuestionId(Long commonQuestionId);  // 공통 질문의 모든 답변 개수
 }
