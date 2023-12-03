@@ -7,8 +7,5 @@ import lombok.NoArgsConstructor;
 @Getter
 public enum CategoryVal {
     DEFAULT_QUESTION,
-    MEMORY_QUESTION,
-    FUTURE_QUESTION,
-    LEISURE_QUESTION,
-    WEATHER_QUESTION
+    COMMON_QUESTION
 }
