@@ -28,4 +28,8 @@ public class CommonQuestionEntity {
 
     @OneToOne
     private CommonQuestionEntity followupQuestion;  // 후속질문 아이디 - fk(CommonQuestion)
+
+    public void updateFollowupQuestion(CommonQuestionEntity followupQuestion) {
+        this.followupQuestion = followupQuestion;
+    }
 }

@@ -27,4 +27,6 @@ public interface UserQuestionRepository extends JpaRepository<UserQuestionEntity
     List<UserQuestionEntity> defaultQuestionList(Long userId);  // 디폴트 질문
 
     UserQuestionEntity findByCommonQuestionAndUser_UserId(CommonQuestionEntity entity, Long userId);  // 유저의 후속 질문
+
+    List<UserQuestionEntity> findByCommonQuestion_CommonQuestionId(Long commonQuestionId);  // commonQuestionId인 유저별 질문 리스트
 }
