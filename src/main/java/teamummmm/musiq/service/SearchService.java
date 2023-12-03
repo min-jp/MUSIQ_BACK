@@ -6,10 +6,7 @@ import se.michaelthelin.spotify.model_objects.specification.*;
 import teamummmm.musiq.dto.SearchAddSongDTO;
 import teamummmm.musiq.dto.SearchResultDTO;
 import teamummmm.musiq.model.*;
-import teamummmm.musiq.repository.AnswerRepository;
-import teamummmm.musiq.repository.MusicInfoRepository;
-import teamummmm.musiq.repository.UserProfileRepository;
-import teamummmm.musiq.repository.UserQuestionRepository;
+import teamummmm.musiq.repository.*;
 import teamummmm.musiq.spotify.SpotifySearchService;
 
 import java.time.LocalDate;
@@ -27,6 +24,7 @@ public class SearchService {
     private final MusicInfoRepository musicInfoRepository;
     private final UserQuestionRepository userQuestionRepository;
     private final UserProfileRepository userProfileRepository;
+    private final CommonQuestionRepository commonQuestionRepository;
 
     public List<SearchResultDTO> searchService (final String searchText) {  // 곡 검색
         Paging<Track> trackPaging = spotifySearchService.searchTracks(searchText);
@@ -68,7 +66,7 @@ public class SearchService {
 
         AnswerEntity answerEntity = AnswerEntity.builder().answerDate(LocalDate.now(ZoneId.of("Asia/Seoul"))).musicInfo(musicInfo).userQuestion(optionalUserQuestion.get()).build(); // 답변 엔티티 생성
 
-        answerRepository.save(answerEntity);  // 저장
+        answerEntity = answerRepository.save(answerEntity);  // 저장
 
         if (answerRepository.isFirstAnswerToday(questionId, LocalDate.now(ZoneId.of("Asia/Seoul")))) {  // 오늘 처음으로 질문에 답변을 추가한 경우
             Optional<UserQuestionEntity> optionalUpdateEntity = userQuestionRepository.findById(questionId);
@@ -123,30 +121,56 @@ public class SearchService {
             colorVal = ColorVal.VALUE8;
         }
 
-        MusicInfoEntity newMusicInfo = MusicInfoEntity.builder().musicColor(colorVal).musicId(musicId).build();  // MusicInfoEntity 생성
+        MusicInfoEntity newMusicInfo = MusicInfoEntity.builder()
+                .musicColor(colorVal)
+                .musicId(musicId)
+                .valence(valence)
+                .energy(energy)
+                .danceability(danceability)
+                .build();  // MusicInfoEntity 생성
 
-        musicInfoRepository.save(newMusicInfo);  // 저장
+        newMusicInfo = musicInfoRepository.save(newMusicInfo);  // 저장
 
         return newMusicInfo;
     }
 
     private void updateAvgFeature(final AnswerEntity answer) {  // 답변의 평균 Feature 계산
-        Long listSize = answerRepository.countByUserQuestion_User_UserId(answer.getUserQuestion().getUser().getUserId());  // 유저의 답변 모두 찾기
+        final Float musicDanceability = answer.getMusicInfo().getDanceability();  // 음악의 danceability
+        final Float musicEnergy = answer.getMusicInfo().getEnergy();  // 음악의 energy
+        final Float musicValence = answer.getMusicInfo().getValence();  // 음악의 valence
 
-        UserProfileEntity userProfileEntity = answer.getUserQuestion().getUser();
+        // 유저별 평균 Feature 업데이트
+        UserProfileEntity userProfileEntity = answer.getUserQuestion().getUser();  // 유저 프로필 엔티티
+
+        Long listSize = answerRepository.countByUserQuestion_User_UserId(userProfileEntity.getUserId());  // 유저의 답변 개수
 
         Float userDanceability = userProfileEntity.getDanceability();  // danceability의 합
         Float userEnergy = userProfileEntity.getEnergy();  // energy의 합
         Float userValence = userProfileEntity.getValence();  // valence의 합
 
-        AudioFeatures audioFeatures = spotifySearchService.getAudioFeatures(answer.getMusicInfo().getMusicId());
-
-        userDanceability = (userDanceability * (listSize - 1) + audioFeatures.getDanceability()) / listSize;
-        userEnergy = (userEnergy * (listSize - 1) + audioFeatures.getEnergy()) / listSize;
-        userValence = (userValence * (listSize - 1) + audioFeatures.getValence()) / listSize;
+        userDanceability = (userDanceability * (listSize - 1) + musicDanceability) / listSize;
+        userEnergy = (userEnergy * (listSize - 1) + musicEnergy) / listSize;
+        userValence = (userValence * (listSize - 1) + musicValence) / listSize;  // 계산
 
         userProfileEntity.updateAudioFeatures(userValence, userEnergy, userDanceability);  // 값 업데이트
 
         userProfileRepository.save(userProfileEntity);  // 저장
+
+        // 공통 질문별 평균 Feature 업데이트
+        CommonQuestionEntity commonQuestionEntity = answer.getUserQuestion().getCommonQuestion();  // 공통 질문 엔티티
+
+        listSize = answerRepository.countByUserQuestion_CommonQuestion_CommonQuestionId (commonQuestionEntity.getCommonQuestionId());  // 공통 질문의 총 답변 개수
+
+        Float commonDanceability = commonQuestionEntity.getAvgDanceability();  // danceability의 합
+        Float commonEnergy = commonQuestionEntity.getAvgEnergy();  // energy의 합
+        Float commonValence = commonQuestionEntity.getAvgValence();  // valence의 합
+
+        commonDanceability = (commonDanceability * (listSize - 1) + musicDanceability) / listSize;
+        commonEnergy = (commonEnergy * (listSize - 1) + musicEnergy) / listSize;
+        commonValence = (commonValence * (listSize - 1) + musicValence) / listSize;  // 계산
+
+        commonQuestionEntity.updateAvgAudioFeatures(commonValence, commonEnergy, commonDanceability);  // 값 업데이트
+
+        commonQuestionRepository.save(commonQuestionEntity);  // 저장
     }
 }
