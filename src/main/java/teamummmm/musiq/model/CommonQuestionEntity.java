@@ -2,6 +2,7 @@ package teamummmm.musiq.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
@@ -28,6 +29,21 @@ public class CommonQuestionEntity {
 
     @OneToOne
     private CommonQuestionEntity followupQuestion;  // 후속질문 아이디 - fk(CommonQuestion)
+
+    @ColumnDefault("0")
+    private Float avgValence;  // 사용자들의 평균 valence
+
+    @ColumnDefault("0")
+    private Float avgEnergy;  // 사용자들의 평균 energy
+
+    @ColumnDefault("0")
+    private Float avgDanceability;  // 사용자들의 평균 danceability
+
+    public void updateAvgAudioFeatures(Float avgValence, Float avgEnergy, Float avgDanceability) {
+        this.avgValence = avgValence;
+        this.avgEnergy = avgEnergy;
+        this.avgDanceability = avgDanceability;
+    }
 
     public void updateFollowupQuestion(CommonQuestionEntity followupQuestion) {
         this.followupQuestion = followupQuestion;
