@@ -30,6 +30,7 @@ public class SpotifySearchService {
         final SearchTracksRequest searchTracksRequest = spotifyApi
                 .searchTracks(q)
                 .market(CountryCode.KR)
+                .setQueryParameter("locale","ko_KR")
                 .build();
 
         try {
@@ -66,7 +67,10 @@ public class SpotifySearchService {
                 .setAccessToken(accessToken)
                 .build();
 
-        final GetTrackRequest getTrackRequest = spotifyApi.getTrack(musicId).build();
+        final GetTrackRequest getTrackRequest = spotifyApi
+                .getTrack(musicId)
+                .setQueryParameter("locale","ko_KR")
+                .build();
 
         try {
             return getTrackRequest.execute();
