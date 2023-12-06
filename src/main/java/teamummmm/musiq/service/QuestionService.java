@@ -18,8 +18,6 @@ public class QuestionService {
     private final UserProfileRepository userProfileRepository;
 
     private final Long FIRST_CALL = -1L;  // 이전 질문이 없는 경우에 보내는 아이디
-    private final int adminWeight = 8;  // 기존 설정된 특징 가중치
-    private final int averageAnswerWeight = 2;  // 사용자들의 평균 특징 가중치
     private int flag = 1;
 
     public RequestQuestionDTO mainQuestionService(final Long userId, final boolean refresh, final Long thisQuestionId) {
@@ -190,10 +188,17 @@ public class QuestionService {
         // 유클리드 거리 계산해서 거리가 가장 가까운 질문 찾기
         return entities.stream().min(Comparator.comparingDouble(entity -> {  // 가장 작은 값 찾기
             CommonQuestionEntity commonQuestion = entity.getCommonQuestion();  // feature를 위한 CommonQuestionEntity
+            Long commonQuestionCnt = answerRepository.countByUserQuestion_CommonQuestion_CommonQuestionId(commonQuestion.getCommonQuestionId());  // 공통 질문별 답변의 개수
 
-            final Float questionDanceability = calculateFeature(commonQuestion.getDanceability(), commonQuestion.getAvgDanceability());  // 질문의 danceability
-            final Float questionEnergy = calculateFeature(commonQuestion.getEnergy(), commonQuestion.getAvgEnergy());  // 질문의 energy
-            final Float questionValence = calculateFeature(commonQuestion.getValence(), commonQuestion.getAvgValence());  // 질문의 valence
+            final Float questionDanceability = calculateFeature(commonQuestion.getDanceability(),
+                    commonQuestion.getAvgDanceability(),
+                    commonQuestionCnt);  // 질문의 danceability
+            final Float questionEnergy = calculateFeature(commonQuestion.getEnergy(),
+                    commonQuestion.getAvgEnergy(),
+                    commonQuestionCnt);  // 질문의 energy
+            final Float questionValence = calculateFeature(commonQuestion.getValence(),
+                    commonQuestion.getAvgValence(),
+                    commonQuestionCnt);  // 질문의 valence
 
             return (Math.log10(entity.getRankingCount() + 1)/Math.log10(3) +  // 랭킹 카운트에 따라 log3(x+1)의 크기로 거리에 더함
                     Math.sqrt(  // 루트
@@ -204,7 +209,24 @@ public class QuestionService {
         })).orElse(null);  // 가장 가까운 UserQuestionEntity 찾은 뒤 리턴
     }
 
-    private Float calculateFeature (final Float adminVal, final Float averageAnswerVal) {  // 설정된 특징, 사용자 특징 가중치
-        return (adminVal * adminWeight + averageAnswerVal * averageAnswerWeight) / (adminWeight + averageAnswerWeight);
+    private Float calculateFeature (final Float adminVal,
+                                    final Float averageAnswerVal,
+                                    final Long commonQuestionCnt) {  // 설정된 특징, 사용자 특징 가중치
+        int MAX_ANSWER_CNT = 10000;  // 답변 가중치 cnt
+
+        Float averageAnswerWeight;  // 사용자들의 평균 특징 가중치
+        Float adminWeight;  // 기존 설정된 특징 가중치
+
+        if (commonQuestionCnt > MAX_ANSWER_CNT) {  // 답변의 개수가 MAX_ANSWER_CNT개 이상인 경우
+            averageAnswerWeight = 1f;  // 1 : 0 설정
+        }
+        else {  // 비율에 따라 가중치 설정
+            float commonQuestionCntFloat = 1f * commonQuestionCnt;
+            averageAnswerWeight = commonQuestionCntFloat / MAX_ANSWER_CNT;  // 답변 개수에 따라 설정
+        }
+
+        adminWeight = 1 - averageAnswerWeight;  // adminWeight 설정
+
+        return (adminVal * adminWeight + averageAnswerVal * averageAnswerWeight);  // 가중치 계산 후 리턴
     }
 }
