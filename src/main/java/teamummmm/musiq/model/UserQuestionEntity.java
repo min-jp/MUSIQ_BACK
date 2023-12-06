@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor  // 매개변수 없는 생성자
 @AllArgsConstructor  // 모든 매개변수 생성자
 @Getter
-@DynamicInsert
+@DynamicInsert  // 기본값 넣기
 @Entity
 @Table(name = "UserQuestion")
 public class UserQuestionEntity {

@@ -3,11 +3,13 @@ package teamummmm.musiq.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
 @Builder  // 빌더로 오브젝트 생성
 @NoArgsConstructor  // 매개변수 없는 생성자
 @AllArgsConstructor  // 모든 매개변수 생성자
 @Getter
+@DynamicInsert  // 기본값 넣기
 @Entity
 @Table(name = "CommonQuestion")
 public class CommonQuestionEntity {
